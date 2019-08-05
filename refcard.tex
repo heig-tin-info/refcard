@@ -97,40 +97,42 @@
 \begin{multicols*}{3}
 \begin{center}
 {\Large \bf Carte de référence C99}\\
-HEIG-VD -- $ $Revision: 1.2 $ $\\
-\huge{\cc\ccby\ccsa}
+HEIG-VD -- Version: 2.0\\
 \end{center}
 
-Cette carte de référence peut être utilisée durant les travaux écrits et examens des cours \emph{info1} et \emph{info2} à moins que le contraire soit explicitement formulé.
+Cette carte de référence peut être utilisée durant les travaux écrits et examens
+des cours \emph{info1} et \emph{info2} à moins que le contraire soit explicitement formulé.
+Elle est une liste non exhaustive des possibilités du langage C.
+Les prototypes de fonction ont été volontairement simplifiés pour une meilleure lisibilité
 
 Signification des termes utilisé dans cette carte de référence.
 
-\begin{tabularx}{\linewidth}{lX}
-  \tt \etc                          & Continuation logique \\
-  \tt \any                          & N'importe quoi d'accepté \\
-  \tt /\any/                        & Expression régulière \\
-  \tt \spc                          & Espace obligatoire \\
-  \tt \type                         & \tt int, long, float, ... \\
-  \tt \name                         & \tt /[A-Za-z][A-Za-z0-9\_]+/ \\
-  \tt \val                          & Valeur \\
-  \tt \NAME                         & \tt /[A-Z][A-Z0-9\_]+/ \\
-  \tt \file                         & Chemin de fichier relatif \\
-  \tt \expr                         & Expression C e.g. \tt a + b \\
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.5\hsize}X% 10% of 4\hsize
+  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+  >{\hsize=0.5\hsize}X% 30% of 4\hsize
+  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+
+  \tt \etc    & Continuation logique    & \tt \any    & N'importe quoi d'accepté \\
+  \tt /\any/  & Expression régulière    & \tt \spc    & Espace obligatoire \\
+  \tt \type   & \tt int, long, float, ... & \tt \name   & \tt /[A-Za-z][A-Za-z0-9\_]+/ \\
+  \tt \val    & Valeur & \tt \NAME   & \tt /[A-Z][A-Z0-9\_]+/ \\
+  \tt \file   & Chemin de fichier relatif & \tt \expr   & Expression C e.g. \tt a + b \\
 \end{tabularx}
 
-\section*{Structure des programmes / Fonctions}
-
-  \begin{tabularx}{\linewidth}{lX}
-    Prototype de fonctio               & \cd{type name(type name,} \etc \cd{);} \\
-    Implémentation de fonction         & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
-    Déclaration de variable            & \cd{type name;} \\
-    Fonction principale                & \cd{int main(void) \{} \any \cd{\}} \\
-    Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
-    Valeur de retour de la fonction principale & \cd{0} = Succès, \cd{!0} = Erreur \\
-  \end{tabularx}
+\section*{Généralités}
+\begin{tabularx}{\linewidth}{lX}
+  Prototype de fonction               & \cd{type name(type name,} \etc \cd{);} \\
+  Implémentation de fonction         & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
+  Déclaration de variable            & \cd{type name;} \\
+  Fonction principale                & \cd{int main(void) \{} \any \cd{\}} \\
+  Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
+  Valeur de retour de la fonction principale & \cd{0 == EXIT_SUCCESS}, \cd{1 == EXIT_FAILURE}\\
+\end{tabularx}
 
 \section*{Préprocesseur}
-
 \begin{tabularx}{\linewidth}{Xl}
   Inclure bibliothèque globale       & \cd{\#include <filename>} \\
   Inclure bibliothèque locale        & \cd{\#include "filename"} \\
@@ -149,28 +151,32 @@ Signification des termes utilisé dans cette carte de référence.
 
 \section*{Types de données}
 
-  \begin{tabularx}{\linewidth}{Xlll}
-    \bf Description & \bf Type standard & \bf \texttt{<stdint.h>} & \bf Profondeur \\
-    \hline
-    Caractère                   & \cd{char}      & \cd {int8_t} & 8 bits \\
-    \hline
-    Entier                      & \cd{int}, \cd{signed}  & \cd {int_least16_t} & $\geq$ 16 bits \\
-    Entier court                & \cd{short}     & \cd {int16_t} & 16 bits \\
-    Entier long                 & \cd{long}      & \cd {int32_t} & 32 bits \\
-    Entier très long            & \cd{long long} & \cd {int64_t} & 64 bits \\
-    Entier non signé (positif)  & \cd{unsigned int}, \cd{unsigned} & \cd{uint_least16_t} & $\geq$ 16-bits \\
-    \hline
-    Simple précision            & \cd{float}     &  & 32 bits \\
-    Double précision            & \cd{double}    &  & $\geq$ 32 bits \\
-  \end{tabularx}
+\begin{tabularx}{\linewidth}{ccccclX}
+  \multicolumn{5}{l}{\bf Profondeur} & \bf Modèle & \bf Système d'exploitation \\
+  \cd {short} & \cd{int} & \cd{long} & \cd{long long} & \cd{int*} & & \\
+  \hline
+  16 & 32 & 32 & 64 & 64 & LLP64 & Windows x86-64, MinGW \\
+  16 & 32 & 64 & 64 & 64 & LP64 & Unix, Linux, MacOS \\
+  16 & 32 & 32 & 64 & 32 & ILP32 & Windows x86 \\
+  16 & 16 & 32 & 64 & 32 & LP32 & (plus utilisé) \\
+\end{tabularx}
 
-  \begin{tabularx}{\linewidth}{cccclX}
-    \multicolumn{4}{c}{\bf Profondeur} & \bf Modèle & \bf Système d'exploitation \\
-    \cd {short} & \cd{int} & \cd{long} & \cd{long long} & & \\
-    \hline
-    16 & 32 & 32 & 64 & LLP64 & Windows x86-64, MinGW \\
-    16 & 32 & 64 & 64 & LP64 & Unix, Linux, MacOS
-  \end{tabularx}
+\begin{tabularx}{\linewidth}{Xlll}
+  \bf Description & \bf Type standard & \bf \texttt{<stdint.h>} & \bf Profondeur \\
+  \hline
+  Caractère                   & \cd{char}      & \cd {int8_t} & 8 bits \\
+  \hline
+  Entier                      & \cd{int}, \cd{signed}  & \cd {int_least16_t} & $\geq$ 16 bits \\
+  Entier court                & \cd{short}     & \cd {int16_t} & 16 bits \\
+  Entier long                 & \cd{long}      & \cd {int32_t} & 32 bits \\
+  Entier très long            & \cd{long long} & \cd {int64_t} & 64 bits \\
+  Entier non signé (positif)  & \cd{unsigned int}, \cd{unsigned} & \cd{uint_least16_t} & $\geq$ 16-bits \\
+  \hline
+  Simple précision            & \cd{float}     &  & 32 bits \\
+  Double précision            & \cd{double}    &  & $\geq$ 32 bits \\
+\end{tabularx}
+
+
 
   \begin{tabularx}{\linewidth}{Xl}
     Non défini                 & \cd{void} \\
@@ -585,6 +591,31 @@ Si non spécifé, le prototype est la forme \cd{double func(double x)}.
 
 \cd{bool}, \cd{true} (vrai (1)), \cd{false} (faux (0))
 
+\section*{Limites \texttt{<limites.h>} / \texttt{<float.h>}}
+
+Valeurs pour un modèle de donnée \textbf{LP32}.
+
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.5\hsize}X% 10% of 4\hsize
+  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+  >{\hsize=0.5\hsize}X% 30% of 4\hsize
+  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+  \cd{CHAR_BIT}  & (8) &   & \\
+  \cd{CHAR_MAX} & \cd{SCHAR_MAX} & \cd{CHAR_MIN} & \cd{SCHAR_MIN} \\
+  \cd{SCHAR_MAX} & +127 & \cd{SCHAR_MIN} & -127 \\
+  \cd{SHRT_MAX} & +32'767 & \cd{SHRT_MIN} & -32'768 \\
+  \cd{INT_MAX} & +2'147'483'647 & \cd{INT_MIN} & -2'147'483'648 \\
+  \cd{LONG_MAX} & +2'147'483'647 & \cd{LONG_MIN} & -2'147'483'648 \\
+  \cd{UCHAR_MAX} & 255 & \cd{UINT_MAX} & 4'294'967'295 \\
+  \cd{ULONG_MAX} & 4'294'967'295 & & \\
+
+  \cd{FLT_RADIX} & 2 & & \rule{0pt}{3ex} \\
+  \cd{FLT_MAX} & \cd{3.4e38} & \cd{FLT_MIN} & \cd{1.2e-38} \\
+  \cd{DBL_MAX} & \cd{1.8e308} & \cd{DBL_MIN} & \cd{2.2e-308} \\
+  \cd{FLT_EPSILON} & \cd{1.1e-7} & \cd{DBL_EPSILON} & \cd{2.2e-16}
+\end{tabularx}
 
 {
   \color{gray}
