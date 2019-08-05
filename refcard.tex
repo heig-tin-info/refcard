@@ -1,0 +1,587 @@
+\documentclass{article}
+\usepackage[a4paper, landscape, margin=1cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+
+\usepackage[fontsize=6.5pt]{scrextend}
+
+\usepackage[T1]{fontenc}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{tabulary}
+\usepackage{cclicenses}
+\usepackage{sectsty}
+\usepackage{lmodern}
+\usepackage{stix}
+\usepackage{parskip}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{multirow}
+
+\lstset{
+  language=c,
+  breaklines=true,
+  keywordstyle=\bfseries\color{black},
+  basicstyle=\ttfamily\color{black},
+  emphstyle={\em \color{gray}},
+  emph={expression, type, NAME, name, expr, value, filename},
+  mathescape=true,
+  keepspaces=true,
+  showspaces=false,
+  showtabs=true,
+  tabsize=3,
+  escapeinside={(*}{*)}
+}
+
+\sectionfont{\fontsize{12}{15}\selectfont}
+\subsectionfont{\fontsize{10}{12}\selectfont}
+\allsectionsfont{\sffamily}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\setlength\parindent{0pt}
+
+\usepackage[scaled=.7]{beramono}
+
+
+\usepackage{titlesec}
+
+\titlespacing\section{0pt}{5pt plus 4pt minus 2pt}{1pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{5pt plus 4pt minus 2pt}{1pt plus 2pt minus 2pt}
+
+\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\newcommand{\key}[2]{#1 &\texttt{#2} \\ }
+\newcommand{\keyg}[2]{\texttt{#2}&#1\\}
+\newcommand{\sep}{\hline}
+\newcommand{\exemple}[1]{\multicolumn{2}{c}{\texttt{Exemple.} #1}\\}
+\newcommand{\note}[1]{\multicolumn{2}{c}{#1}\\}
+\newcommand{\bs}{$\backslash$}
+\newcommand{\tab}{\hspace{2em}}
+
+\newenvironment{keylist}
+     {\noindent\begin{tabular*}{\linewidth}{ll}} % p{0.6\linewidth}
+     {\end{tabular*}}
+
+\newenvironment{fivecolumns}
+     {\noindent\begin{tabular*}{\linewidth}{lllll}}
+     {\end{tabular*}}
+\newcommand{\fivekeys}[5]{#1&#2&#3&#4&#5\\}
+
+\newenvironment{tcolumns}
+     {\noindent\begin{tabular*}{\linewidth}{llr}}
+     {\end{tabular*}}
+\newcommand{\tkey}[3]{\texttt{#1}&#2&(#3)\\}
+
+\newcommand{\type}{\emph{type}}
+\newcommand{\name}{\emph{name}}
+\newcommand{\val}{\emph{value}}
+\newcommand{\NAME}{\emph{NAME}}
+\newcommand{\file}{\emph{filename}}
+\newcommand{\expr}{\emph{expression}}
+\newcommand{\etc}{\small \ldots}
+\newcommand{\any}{$\hzigzag$ }
+\newcommand{\spc}{$\mathvisiblespace$}
+
+\newcommand{\cd}{\lstinline}
+
+\newlength\mybaselinestretch
+\mybaselinestretch=0pt plus 0.02pt\relax
+\addtolength{\baselineskip}{\mybaselinestretch}
+
+\begin{document}
+
+\setlength{\columnseprule}{0.4pt}
+
+\begin{multicols*}{3}
+\begin{center}
+{\Large \bf Carte de référence C99}\\
+HEIG-VD -- $ $Revision: 1.2 $ $\\
+\huge{\cc\ccby\ccsa}
+\end{center}
+
+Cette carte de référence peut être utilisée durant les travaux écrits et examens des cours \emph{info1} et \emph{info2} à moins que le contraire soit explicitement formulé.
+
+Signification des termes utilisé dans cette carte de référence.
+
+\begin{tabularx}{\linewidth}{lX}
+  \tt \etc                          & Continuation logique \\
+  \tt \any                          & N'importe quoi d'accepté \\
+  \tt /\any/                        & Expression régulière \\
+  \tt \spc                          & Espace obligatoire \\
+  \tt \type                         & \tt int, long, float, ... \\
+  \tt \name                         & \tt /[A-Za-z][A-Za-z0-9\_]+/ \\
+  \tt \val                          & Valeur \\
+  \tt \NAME                         & \tt /[A-Z][A-Z0-9\_]+/ \\
+  \tt \file                         & Chemin de fichier relatif \\
+  \tt \expr                         & Expression C e.g. \tt a + b \\
+\end{tabularx}
+
+\section*{Structure des programmes / Fonctions}
+
+  \begin{tabularx}{\linewidth}{lX}
+    Prototype de fonctio               & \cd{type name(type name,} \etc \cd{);} \\
+    Implémentation de fonction         & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
+    Déclaration de variable            & \cd{type name;} \\
+    Fonction principale                & \cd{int main(void) \{} \any \cd{\}} \\
+    Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
+    Valeur de retour de la fonction principale & \cd{0} = Succès, \cd{!0} = Erreur \\
+  \end{tabularx}
+
+\section*{Préprocesseur}
+
+\begin{tabularx}{\linewidth}{Xl}
+  Inclure bibliothèque globale       & \cd{\#include <filename>} \\
+  Inclure bibliothèque locale        & \cd{\#include "filename"} \\
+  Remplacer un texte                 & \cd{\#define NAME expression} \\
+  Macro                              & \cd{\#define NAME(expr, ...) expression} \\
+                                     & \cd{\#define max(A,B) ((A)>(B) ? (A) : (B))} \\
+  Supprimer une définition           & \cd{\#undef NAME} \\
+  Conversion en chaîne de caractères & \cd{\#} \\
+                                     & \cd{\#define STR(X) \#X} \\
+  Concaténation                      & \cd{\#\#} \\
+  Exécution conditionelle            & \cd{\#if, \#else, \#elif, \#endif} \\
+                                     & \cd{\#ifdef, \#ifndef} \\
+  Est-ce que \texttt{\NAME} est défini ? & \cd{defined(NAME)} \\
+  Saut de ligne virtuel              & \bs
+\end{tabularx}
+
+\section*{Types de données}
+
+  \begin{tabularx}{\linewidth}{Xlll}
+    \bf Description & \bf Type standard & \bf Type C99 & \bf Profondeur \\
+    \hline
+    Caractère                   & \cd{char}      & \cd {int8_t} & 8 bits \\
+    \hline
+    Entier                      & \cd{int}, \cd{signed}  & \cd {int_least16_t} & $\geq$ 16 bits \\
+    Entier court                & \cd{short}     & \cd {int16_t} & 16 bits \\
+    Entier long                 & \cd{long}      & \cd {int32_t} & 32 bits \\
+    Entier très long            & \cd{long long} & \cd {int64_t} & 64 bits \\
+    Entier non signé (positif)  & \cd{unsigned int}, \cd{unsigned} & \cd{uint_least16_t} & $\geq$ 16-bits \\
+    \hline
+    Simple précision            & \cd{float}     &  & 32 bits \\
+    Double précision            & \cd{double}    &  & $\geq$ 32 bits \\
+  \end{tabularx}
+
+  \begin{tabularx}{\linewidth}{cccclX}
+    \multicolumn{4}{c}{\bf Profondeur} & \bf Modèle & \bf Système d'exploitation \\
+    \cd {short} & \cd{int} & \cd{long} & \cd{long long} & & \\
+    \hline
+    16 & 32 & 32 & 64 & LLP64 & Windows x86-64, MinGW \\
+    16 & 32 & 64 & 64 & LP64 & Unix, Linux, MacOS
+  \end{tabularx}
+
+  \begin{tabularx}{\linewidth}{Xl}
+    Non défini                 & \cd{void} \\
+    Entier non signé pour comptage et indexation & \cd{size_t} \\
+    Pointeur sur                       & \cd{*type} \\
+    Énumération                        & \cd{enum name \{name=value, ...\}};
+  \end{tabularx}
+
+  \begin{lstlisting}
+    typedef struct Foo { int a; int b; } Foo;
+    struct { int c; } Bar;
+  \end{lstlisting}
+\section*{Qualificatifs de types}
+
+\begin{tabularx}{\linewidth}{Xl}
+  Constante                           & \cd{const} \\
+  Déclare une variable externe        & \cd{extern} \\
+  Force une variable dans un registre & \cd{register} \\
+  Réduit la visiblité à ce fichier    & \cd{static} \\
+  Impose aucune optimisation par le compilateur & \cd{volatile} \\
+  Limite l'aliasing d'un pointeur     & \cd{restrict} \\
+\end{tabularx}
+
+\begin{lstlisting}
+  extern const volatile int real_time_clock;
+\end{lstlisting}
+
+\begin{keylist}
+
+\key{structure}{struct}
+\key{créer un type de donnée}{typedef \texttt{nomdutype}}
+\key{taille d'un objet (renvoie un \texttt{size\_t})}{sizeof \texttt{objet}}
+\key{taille d'un type (renvoie un \texttt{size\_t})}{sizeof(\texttt{type)}}
+\end{keylist}
+
+\section*{Initialisation}
+\begin{tabularx}{\linewidth}{Xl}
+  Variable & \cd{type name = value;} \\
+  Tableau & \cd{type name[] = \{value, ...\}}; \\
+  Chaîne de caractère & \cd{type name[] = "...";} \\
+  Stucture & \cd{type name = \{.key=value, ...\};} \\
+  A zéro & \cd{type name = \{0\};} \\
+\end{tabularx}
+
+\section*{Constantes}
+\begin{keylist}
+\key{long (suffixe)}{L \textrm{ou} l}
+\key{float (suffixe)}{F \textrm{ou} f}
+\key{forme exponentielle}{e}
+\key{octal (zéro préfixe)}{0}
+\key{hexadécimal (zéro x préfixe)}{0x \textrm{ou} OX}
+\key{caractère constant (char, octal, hex)}{'a', '\bs\texttt{ooo}', '\bs{}x\texttt{hh}'}
+\key{nouvelle ligne, cr, tab, bs}{\bs\bs{}, \bs?, \bs', \bs"}
+\key{constante chaîne (se finit par '\texttt{\bs{}0}')}{"abc...de"}
+\end{keylist}
+
+\section*{Pointeurs, Tableaux et Structures}
+\begin{tabularx}{\linewidth}{Xl}
+  Déclaration d'un pointeur & \cd{type *name;} \\
+  Déclaration d'un pointeur de fonction & \cd{type (*name)(type name, ...);} \\
+  Pointeur générique & \cd{void* name;} \\
+  Adresse nulle & \cd{NULL} \\
+  Adresse de variable & \cd{\&name} \\
+  Déclaration de tableau & \cd{type name[size];}, \cd{type name[size][size];}, ... \\
+\end{tabularx}
+
+\subsection*{Structures}
+\begin{keylist}
+\keyg{modèle de la structure}{struct \texttt{tag} \{}
+\keyg{déclaration des membres}{\tab\texttt{déclarations}}
+\keyg{}{\};}
+\key{créer une structure}{struct \texttt{tag} \texttt{nom}}
+\key{membre d'une structure}{\texttt{nom}.\texttt{membre}}
+\key{membre d'une structure pointée}{\texttt{pointeur}->\texttt{membre}}
+\exemple{\texttt{(*p).x} et \texttt{p->x} sont le même}
+\key{simple valeur, structure de type multiple}{union}
+\key{champs de bit avec \texttt{b} bits}{\texttt{membre}:\texttt{b}}
+\end{keylist}
+
+\section*{Opérateurs}
+
+\begin{tabularx}{\linewidth}{c|l|X|c}
+  \bf Priorité & \bf Opérateur & \bf Description & \bf Associativité \\
+  \hline
+  \multirow{6}{*}{1} & \cd{++ --}  & Suffix incrément et décrément & \multirow{6}{*}{$\rightarrow$} \\
+                     & \cd{()}     & Appel de fonction                     & \\
+                     & \cd{[]}     & Indice de tableau                     & \\
+                     & \cd{.}      & Accès à un membre de structure        & \\
+                     & \cd{->}     & Identique à ci-dessus mais via pointeur & \\
+                     & \cd{(type)\{list\}} & \emph{Compound litéral} & \\
+  \hline
+  \multirow{7}{*}{2} & \cd{++ --}  & Préfixe incrément et décrément & \multirow{7}{*}{$\leftarrow$} \\
+                     & \cd{+ -}    & Plus, moins unitaire & \\
+                     & \cd{! ~}    & Négation logique et bit à bit & \\
+                     & \cd{(type)} & Transtypage (\emph{cast}) & \\
+                     & \cd{*}      & Indirection (déréférencement) & \\
+                     & \cd{&}      & Adresse de & \\
+                     & \cd{sizeof} & Taille de & \\
+  \hline
+  3                  & \cd{* / \%}  & Multiplication, division et modulo & \multirow{11}{*}{$\rightarrow$} \\
+  \cline{1-3}
+  4                  & \cd{+ -}    & Addition, soustraction & \\
+  \cline{1-3}
+  5                  & \cd{<< >>}  & Décalage à gauche, à droite & \\
+  \cline{1-3}
+  \multirow{2}{*}{6}  & \cd{< <=}   & Plus petit, plus petit ou égal & \\
+                     & \cd{> >=}   & Plus grand, plus grand ou égal & \\
+  \cline{1-3}
+  7                  & \cd{== !=}  & Égal, différent de & \\
+  \cline{1-3}
+  8                  & \cd{&}      & ET bit à bit & \\
+  \cline{1-3}
+  9                  & \cd{^}      & XOR bit à bit (ou exclusif) & \\
+  \cline{1-3}
+  10                 & \cd{|}      & OU bit à bit & \\
+  \cline{1-3}
+  11                 & \cd{&&}     & ET logique & \\
+  \cline{1-3}
+  12                 & \cd{||}     & OU logique & \\
+  \hline
+  13                 & \cd{?:}     & Opérateur ternaire & \multirow{6}{*}{$\rightarrow$} \\
+  \cline{1-3}
+  \multirow{5}{*}{14} & \cd{=}      & Assignement simple & \\
+                     & \cd{+= -=}  & Assignement avec somme, différence & \\
+                     & \cd{*= /= \%=} & Assignement avec multiplication, division, modulo & \\
+                     & \cd{<<= >>=}  & Assignement avec décalage & \\
+                     & \cd{&= ^= |=} & Assignement avec opération bit à bit & \\
+  \hline
+  15                 & \cd{,}     & Virgule & $\leftarrow$\\
+\end{tabularx}
+
+
+\section*{Flot de contrôle}
+
+  \begin{tabularx}{\linewidth}{Xl}
+    Fin d'instruction & \cd{;} \\
+    Délimiteur de blocs & \cd{\{ \}} \\
+    Interruption d'un \cd{switch}, \cd{do}, \cd{for} & \cd{break} \\
+    Continue à la prochaine itération d'un \cd{while}, \cd{do}, \cd{for} & \cd{continue} \\
+    Saut à une étiquette & \cd{goto} \\
+    Étiquette & \cd[emph={name}]{name:} \\
+    Retour de fonction & \cd[emph={expression}]{return expression;} \\
+  \end{tabularx}
+
+  \begin{tabularx}{\linewidth}{Xl}
+  Si, sinon si, sinon & \cd[emph={expression}]{if (expression) \{ \} else if (expression) \{ \}; else \{ \};} \\
+  Tant que & \cd[emph={expression}]{while (expression) \{ \}} \\
+  Pour & \cd[emph={expression}]{for (expression, expression, expression) \{ \}} \\
+  Jusqu'à ce que & \cd{do \{ \} while (expression);} \\
+  Choix multiples & \cd{switch(expression) \{ case a; instr; break; case b: instr; \}} \\
+  \end{tabularx}
+
+
+
+\section*{Bibliothèques Standards}
+  \begin{tabularx}{\linewidth}{ccccc}
+    \cd{<assert.h>} & \cd{<complex.h>}  & \cd{<ctype.h>}  & \cd{<errno.h>}   & \cd{<fenv.h>} \\
+    \cd{<float.h>}  & \cd{<inttypes.h>} & \cd{<limits.h>} & \cd{<locale.h>}  & \cd{<math.h>} \\
+    \cd{<setjmp.h>} & \cd{<signal.h>}   & \cd{<stdarg.h>} & \cd{<stdbool.h>} & \cd{<stddef.h>} \\
+    \cd{<stdint.h>} & \cd{<stdio.h>}    & \cd{<stdlib.h>} & \cd{<string.h>}  & \cd{<tgmath.h>} \\
+    \cd{<time.h>}   &              &            &             & \\
+  \end{tabularx}
+
+\section*{Tests de classe de caractères \texttt{<ctype.h>}}
+
+\begin{tabularx}{\linewidth}{Xrl}
+  \bf Description         & Conditions             & Prototype \\
+  \hline
+  Alphanumérique ?        & \texttt{/[0-9a-zA-Z]/} & \cd{int isalnum(int c);} \\
+  Alphabétique ?          & \texttt{/[a-zA-Z]/} & \cd{int isalpha(int c);} \\
+  Chiffre                 & \texttt{/[0-9]/} & \cd{int isdigit(int c);} \\
+  Caractère de contrôle ? & \footnotesize $[0\dots32, 127]$  & \cd{int isalpha(int c);} \\
+  Caractère imprimable    & \footnotesize $[33\dots 126]$ & \cd{int isgraph(int c);} \\
+  Caractère imprimable avec espace & \footnotesize$[32\dots 126]$ & \cd{int isprint(int c);} \\
+  Minuscule ?             & \footnotesize $[65\dots 90]$ & \cd{int islower(int c);} \\
+  Majuscule ?             & \footnotesize $[97\dots 122]$ & \cd{int isupper(int c);} \\
+  \multicolumn{2}{l}{Ponctuation ? \hfill\footnotesize $[33\dots 47, 58\dots64, 91\dots96, 123\dots126]$} & \cd{int ispunct(int c);} \\
+  Espaces ?               & \footnotesize $[9\dots13,32]$ & \cd{int isspace(int c);} \\
+  Hexadécimal ?           & \texttt{/0-9a-fA-F/} &  \cd{int isxdigit(int c);} \\
+  \hline
+  Minuscule à majuscule & \texttt{/a-z/} $\to$ \texttt{/A-Z/} & \cd{int toupper(int c);} \\
+  Majuscule à minuscule & \texttt{/A-Z/} $\to$ \texttt{/a-z/} & \cd{int tolower(int c);} \\
+\end{tabularx}
+
+\section*{Opération sur les Chaînes de caractères \texttt{<string.h>}}
+Les prototypes ont été volontairement raccourcis pour une meilleure lisibilité.
+
+\begin{tabularx}{\linewidth}{Xl}
+  Longueur de \texttt{s} & \cd{size_t strlen(char *s);} \\
+  Copie \texttt{s1} dans \texttt{s2} & \cd{char *strcpy(char* s1, char* s2);} \\
+   ... jusqu'à \texttt{n} caractères & \cd{char *strncpy(char* s1, char* s2, size_t n);} \\
+  Concatène \texttt{s1} après \texttt{s2} & \cd{char *strcat(char* s1, char* s2);} \\
+   ... jusqu'à \texttt{n} caractères & \cd{char *strncat(char* s1, char* s2, size_t n);} \\
+  Compare \texttt{s1} à \texttt{s2} & \cd{int strcmp(char *s1, char *s2);} \\
+   ... seulement \texttt{n} premiers caractères & \cd{int strncmp(char *s1, char *s2, size_t n);} \\
+  Pointeur sur le premier \texttt{c} dans \texttt{s} & \cd{char *strchr(char *s, int c);} \\
+  Pointeur sur le dernier \texttt{c} dans \texttt{s} & \cd{char *strrchr(char *s, int c);} \\
+  \hline
+  Copie \texttt{n} caractères de \texttt{s2} dans \texttt{s1} & \cd{void *memcpy(void* s1, void* s2, size_t n);} \\
+  Copie \texttt{n} caractères de \texttt{s2} dans \texttt{s1}* & \cd{void *memmove(void* s1, void* s2, size_t n);} \\
+  Compare \texttt{n} caractères de \texttt{s2} avec \texttt{s1} & \cd{int memcmp(void *s1, void *s2, size_t n);} \\
+  Cherche \texttt{c} dans \texttt{s} sur \texttt{n} caractères & \cd{void *memchr(void *s, int c, size_t n);} \\
+  Initialise \texttt{s} de longueur \texttt{n} à \texttt{c} & \cd{void *memset(void *s, int c, size_t n);} \\
+\end{tabularx}
+
+* Permet le chauvauchement des espace de source et destination.
+
+\section*{Entrée/Sortie \texttt{<stdio.h>}}
+
+\begin{tabularx}{\linewidth}{Xl}
+  Nouveau pointeur de fichier & \cd{FILE* fp;} \\
+  Entrée standard & \cd{stdin} \\
+  Sortie standard & \cd{stdout} \\
+  Sortie erreur & \cd{stderr} \\
+  Fin de fichier & \cd{EOF} \rule{0pt}{3ex} \\
+  Lire un caractère & \cd{int getchar(void);} \rule{0pt}{3ex} \\
+  Écrire un caractère & \cd{int putchar(int c);} \\
+  Écriture formatée & \cd{int printf(char* format, ...);} \\
+  Lecture formatée & \cd{int scanf(char* format, ...);} \\
+  Lecture dans la chaîne \texttt{s} & \cd{int sscanf(char* s, char* format, ...);} \\
+  Lire une lire dans \texttt{s} & \cd{char *gets(char *s);} \\
+  Affiche la chaîne \texttt{s} & \cd{int puts(char *s);} \\
+
+  Écrire dans la chaîne \texttt{s} & \cd{int sprintf(char* s, char* format, ...);} \rule{0pt}{3ex} \\
+
+  Ouvre un fichier & \cd{FILE *fopen(char* filename, char* mode);} \\
+  Ferme un fichier & \cd{int fclose(FILE *stream);} \\
+  Lire un caractère & \cd{int fgetc(FILE *stream);} \\
+  Écrire un caractère & \cd{int fputc(int c, FILE *stream);} \\
+
+  Lire une ligne & \cd{char *fgets(char* s, int n, FILE* stream);} \rule{0pt}{3ex} \\
+  Écrire une ligne & \cd{int fputs(char* s, FILE* stream);} \\
+
+  Écriture formattée dans un fichier & \cd{int fprintf(FILE* stream, char* format, ...);} \rule{0pt}{3ex} \\
+  Lecture formattée depuis un fichier & \cd{int fscanf(FILE* stream, char* format, ...);} \\
+
+  Retourne \cd{0} si pas d'erreur & \cd{int ferror(FILE *stream);} \rule{0pt}{3ex} \\
+  Retourne \cd{!0} si fin de fichier & \cd{int feof(FILE *stream);}
+\end{tabularx}
+
+modes: \texttt{r}: lecture; \texttt{w}: écriture; \texttt{a}: ajout
+
+\subsection*{Formattage de chaîne de caractères}
+
+Considérant le format \texttt{\%[flags][width][.precision][length]type}
+
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.2\hsize}X% 10% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+  >{\hsize=0.2\hsize}X% 30% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+  \multicolumn{4}{l}{\bf Drapeaux (\texttt{flags})} \\
+  \cd{-}        & Justifie à gauche & \cd{+}    & Affiche le signe \texttt{+} \\
+  \tt \spc & Remplissage avec des espace       & \cd{0}      & Remplissage avec des zéros \\
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.2\hsize}X% 10% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+  >{\hsize=0.2\hsize}X% 30% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+  \multicolumn{4}{l}{\bf Longueur (\texttt{length})} \\
+  \cd{hh} & Entier promu d'un \cd{char} & \cd{h}    & Entier promu d'un \cd{short} \\
+  \cd{ll} & Entier \cd{long long}       & \cd{l}    & Entier \cd{long} \\
+  \cd{L} & Flottant double précision    & \cd{z}    & Entier \cd{size_t} \\
+  \cd{j} & Entier \cd{intmax_t}         & \cd{t}    & Entier \cd{ptrdiff_t} \\
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.2\hsize}X% 10% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+  >{\hsize=0.2\hsize}X% 30% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+  \multicolumn{4}{l}{\bf Champ type (\texttt{type})} \\
+  \cd{\%}        & Caractère pourcent & \cd{c}    & Caractère (\texttt{char}) \\
+  \cd{d}, \cd{i} & Entier signé       & \cd{u}      & Entier non signé \\
+  \cd{o} & Entier non signé en octal  & \cd{x}, \cd{X} & Entier non signé en hexadécimal \\
+  \cd{f}, \cd{F} & Flottant double précision & \cd{a}, \cd{A}    & Double en hexadécimal \\
+  \cd{p}         & Pointeur (adresse) & \cd{n}    & Nombre de caractère écrits \\
+  \cd{e}, \cd{E} & \multicolumn{3}{l}{Double en format exponentiel \texttt{[-]d.ddd e [+-]ddd}}\\
+  \cd{g}, \cd{G} & \multicolumn{3}{l}{Double en format le plus adapté normal (\cd{f}, \cd{F}) ou exponentiel (\cd{e}, \cd{E})} \\
+\end{tabularx}
+
+\section*{Utilitaires Standard \texttt{<stdlib.h>}}
+
+\begin{tabularx}{\linewidth}{Xl}
+  \multicolumn{2}{l}{\bf Macros} \\
+  Code de fin: succès & \cd{EXIT_SUCCESS} \\
+  Code de fin: erreur & \cd{EXIT_FAILURE} \\
+  Pointeur null & \cd{NULL} \\
+  Valeur aléatoire maximum & \cd{RAND_MAX} \\
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.2\hsize}X% 10% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+  >{\hsize=0.2\hsize}X% 30% of 4\hsize
+  >{\hsize=1.8\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+  \multicolumn{4}{l}{\bf Suffix pour fonctions \cd{ato}\texttt{\spc} et \cd{strto}\texttt{\spc}}  \\
+  \cd{f}  & \cd{float} & \cd{d} & \cd{double} \\
+  \cd{i}  & \cd{int} & \cd{l} & \cd{long} \\
+  \cd{ll}  & \cd{long long} & \cd{ld} & \cd{long double} \\
+  \cd{ul}  & \cd{unsigned long} & \cd{ull} & \cd{unsigned long long} \\
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{Xl}
+  \multicolumn{2}{l}{\bf Conversion de chaînes de caractères en nombre} \\
+  \cd{f}, \cd{i}, \cd{l}, \cd{ll} & \cd{type ato}\texttt{\spc}\cd{ (char* str);} \\
+  \cd{f}, \cd{l}, \cd{d}, \cd{ld}, \cd{ll}, \cd{ul}, \cd{ull} & \cd{type strto}\texttt{\spc}\cd{ (char* str, char** endptr);} \\
+
+  \multicolumn{2}{l}{\bf Arithmétique d'entiers} \rule{0pt}{3ex}\\
+  Valeur absolue & \cd{int abs (int n);} \\
+  Valeur absolue long & \cd{long labs (long n);} \\
+  Valeur absolue long long & \cd{long long llabs (long long n);} \\
+  Division entière & \cd{int div (int n);} \\
+  Division entière long & \cd{long ldiv (long n);} \\
+  Division entière long long & \cd{long long lldiv (long long n);} \\
+
+  \multicolumn{2}{l}{\bf Pseudo aléatoire} \rule{0pt}{3ex}\\
+  Nombre aléatoire \cd{[0,MAX_RAND]} & \cd{int rand (void);} \\
+  Initialise le générateur aléatoire & \cd{void srand (unsigned int seed);} \\
+
+  \multicolumn{2}{l}{\bf Environement} \rule{0pt}{3ex}\\
+  Termine le processus & \cd{void exit (int status);} \\
+  Termine le processus avec \cd{SIGABRT} & \cd{void abort(void);} \\
+  Exécute une commande système & \cd{int system (const char* command);} \\
+  Récupère l'environment & \cd{char* getenv (const char* name);} \\
+
+  \multicolumn{2}{l}{\bf Allocation de mémoire dynamique} \rule{0pt}{3ex} \\
+  Alloue un tabeau initialisé & \cd{void* calloc (size_t num, size_t size);} \\
+  Alloue un bloc mémoire & \cd{void* malloc (size_t size);} \\
+  Réalloue un bloc mémoire & \cd{void* realloc (void* ptr, size_t size);} \\
+  Désalloue un bloc mémoire & \cd{void free (void* ptr);} \\
+\end{tabularx}
+\begin{tabularx}{\linewidth}{Xl}
+  \multicolumn{2}{l}{\bf Tri et recherche} \rule{0pt}{3ex} \\
+  Recherche dichotomique & \cd{void* bsearch (void* key, void* base, size_t num,} \\
+                         & \cd{\ \ \ \ size_t size, int (*compar)(void*, void*));} \\
+  Tri rapide             & \cd{void qsort (void* base, size_t num,} \\
+                         & \cd{\ \ \ \ size_t size, int (*compar)(void*, void*));} \\
+\end{tabularx}
+
+\section*{Date et heure \texttt{<time.h>}}
+\begin{tabularx}{\linewidth}{Xl}
+  Temps absolu en seconde depuis 1970/01/01 & \cd{time_t} \\
+  Temps relatif depuis un point dans le temps (\emph{boot}) & \cd{clock_t} \\
+  Temps calendrier (date et heure) & \cd{struct tm} \\
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{Xl}
+  Temps écoulé depuis le début & \cd{clock_t clock(void)} \\
+  Temps calendrier courante & \cd{time_t time(time_t *timer)} \\
+  Différence de temps en secondes & \cd{double difftime(time_t time1, time_t time2)} \\
+  Conversion en temps calendrier & \cd{time_t mktime(struct tm *timeptr)} \\
+  Conversion d'une temps calendrier & \cd{struct tm *gmtime(const time_t *timer)} \\
+  Conversion d'une temps locale & \cd{struct tm *localtime(const time_t *timer)} \\
+  Représentation texte & \cd{char *asctime(const struct tm *timeptr)} \\
+  Représentation texte & \cd{char *ctime(const time_t *timer)} \\
+  Formattage d'un temps & \cd{size_t strftime(char *str, size_t maxsize,} \\
+                     & \cd{\ \ \ \ char *format, struct tm *timeptr)} \\
+\end{tabularx}
+
+\begin{lstlisting}
+struct tm {
+   int tm_sec;   /* Secondes (0..59) */ int tm_min;  /* Minutes (0..59) */
+   int tm_hour;  /* Heures (0..23) */   int tm_mday; /* Jour du mois (1..31) */
+   int tm_mon;   /* Mois (0..11) */     int tm_year; /* Nombre d'années depuis 1900 */
+   int tm_wday;  /* Jour depuis dimanche (0..6) */
+   int tm_yday;  /* Jour dans l'année de (0..365) */
+   int tm_isdst; /* Heure été ? (Daylight Saving Time) */
+};
+\end{lstlisting}
+
+Format pour \texttt{asctime}: \cd{"\%.3s \%.3s\%3d \%.2d:\%.2d:\%.2d \%d\\n"}
+
+
+\section*{Fonctions Mathématique \texttt{<math.h>}}
+
+Si non spécifé, le prototype est la forme \cd{double func(double x)}.
+
+\begin{tabularx}{\linewidth}{Xl}
+  Fonctions trigonométriques & \cd{cos}, \cd{sin}, \cd{tan} \\
+  Fonctions inverses (\emph{arc}) & \cd{acos}, \cd{asin}, \cd{atan} \\
+  Fonctions hyperbliques & \cd{cosh}, \cd{sinh}, \cd{tanh} \\
+  Arctangente corrigée $\arctan(y / x)$ & \cd{double atan2(double y, double x)} \\
+  Fonctions exponentielles & \cd{exp}, \cd{log}, \cd{log10} \\
+  Division (retourne partie décimale) & \cd{double modf(double x, double *integer)} \\
+  Reste de division $x/y$ pour $x - n \cdot y$ & \cd{double fmod(double x, double y)} \\
+  Arrondi à l'entier inférieur & \cd{floor} \\
+  Arrondi à l'entier supérieur & \cd{ceil} \\
+  Valeur absolue & \cd{fabs} \\
+  Puissance & \cd{double pow(double x, double y)} \\
+  Racine carrée & \cd{sqrt} \\
+\end{tabularx}
+
+
+
+{
+  \color{gray}
+  \small
+  (c) 2003-2019 Valvassori Moïse <\texttt{djedi@ai.univ-paris8.fr}> \\
+  (c) 2019 Yves Chevallier <\texttt{yves.chevallier@heig-vd.ch}> \\
+  (c) 1998 Joseph H. Silverman
+}
+\end{multicols*}
+\end{document}
