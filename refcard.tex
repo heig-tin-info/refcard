@@ -150,7 +150,7 @@ Signification des termes utilisé dans cette carte de référence.
 \section*{Types de données}
 
   \begin{tabularx}{\linewidth}{Xlll}
-    \bf Description & \bf Type standard & \bf Type C99 & \bf Profondeur \\
+    \bf Description & \bf Type standard & \bf \texttt{<stdint.h>} & \bf Profondeur \\
     \hline
     Caractère                   & \cd{char}      & \cd {int8_t} & 8 bits \\
     \hline
@@ -183,6 +183,13 @@ Signification des termes utilisé dans cette carte de référence.
     typedef struct Foo { int a; int b; } Foo;
     struct { int c; } Bar;
   \end{lstlisting}
+
+  \begin{tabularx}{\linewidth}{Xl}
+  Type fixe & \cd{intN_t} \\
+  Type à taille garantie & \cd{int_leastN_t} \\
+  Type rapide & \cd{int_fastN_t}
+  \end{tabularx}
+
 \section*{Qualificatifs de types}
 
 \begin{tabularx}{\linewidth}{Xl}
@@ -574,6 +581,9 @@ Si non spécifé, le prototype est la forme \cd{double func(double x)}.
   Racine carrée & \cd{sqrt} \\
 \end{tabularx}
 
+\section*{Booléens \texttt{<stdbool.h>}}
+
+\cd{bool}, \cd{true} (vrai (1)), \cd{false} (faux (0))
 
 
 {
