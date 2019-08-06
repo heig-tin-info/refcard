@@ -18,6 +18,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{multirow}
+\usepackage[scaled=.8]{beramono}
+\usepackage{titlesec}
 
 \lstset{
   language=c,
@@ -25,7 +27,7 @@
   keywordstyle=\bfseries\color{black},
   basicstyle=\ttfamily\color{black},
   emphstyle={\em \color{gray}},
-  emph={expression, type, NAME, name, expr, value, filename},
+  emph={expression, type, NAME, name, expr, value, filename, member, type},
   mathescape=true,
   keepspaces=true,
   showspaces=false,
@@ -34,45 +36,25 @@
   escapeinside={(*}{*)}
 }
 
-\sectionfont{\fontsize{12}{15}\selectfont}
-\subsectionfont{\fontsize{10}{12}\selectfont}
-\allsectionsfont{\sffamily}
-
 \renewcommand{\familydefault}{\sfdefault}
 
+\sectionfont{\fontsize{12}{15}\selectfont}
+\subsectionfont{\fontsize{10}{12}\selectfont}
+
+\allsectionsfont{\sffamily\underline}
+
+
 \setlength\parindent{0pt}
+\setlength\tabcolsep{1.5pt}
 
-\usepackage[scaled=.7]{beramono}
+\pagenumbering{gobble}
 
-
-\usepackage{titlesec}
-
-\titlespacing\section{0pt}{5pt plus 4pt minus 2pt}{1pt plus 2pt minus 2pt}
-\titlespacing\subsection{0pt}{5pt plus 4pt minus 2pt}{1pt plus 2pt minus 2pt}
+\titlespacing\section{0pt}{-1pt}{-1pt}
+\titlespacing\subsection{0pt}{-2pt}{-2pt}
 
 \newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
 
-\newcommand{\key}[2]{#1 &\texttt{#2} \\ }
-\newcommand{\keyg}[2]{\texttt{#2}&#1\\}
-\newcommand{\sep}{\hline}
-\newcommand{\exemple}[1]{\multicolumn{2}{c}{\texttt{Exemple.} #1}\\}
-\newcommand{\note}[1]{\multicolumn{2}{c}{#1}\\}
-\newcommand{\bs}{$\backslash$}
 \newcommand{\tab}{\hspace{2em}}
-
-\newenvironment{keylist}
-     {\noindent\begin{tabular*}{\linewidth}{ll}} % p{0.6\linewidth}
-     {\end{tabular*}}
-
-\newenvironment{fivecolumns}
-     {\noindent\begin{tabular*}{\linewidth}{lllll}}
-     {\end{tabular*}}
-\newcommand{\fivekeys}[5]{#1&#2&#3&#4&#5\\}
-
-\newenvironment{tcolumns}
-     {\noindent\begin{tabular*}{\linewidth}{llr}}
-     {\end{tabular*}}
-\newcommand{\tkey}[3]{\texttt{#1}&#2&(#3)\\}
 
 \newcommand{\type}{\emph{type}}
 \newcommand{\name}{\emph{name}}
@@ -115,11 +97,11 @@ Signification des termes utilisé dans cette carte de référence.
      % sum=4.0\hsize for 4 columns
   }
 
-  \tt \etc    & Continuation logique    & \tt \any    & N'importe quoi d'accepté \\
-  \tt /\any/  & Expression régulière    & \tt \spc    & Espace obligatoire \\
-  \tt \type   & \tt int, long, float, ... & \tt \name   & \tt /[A-Za-z][A-Za-z0-9\_]+/ \\
-  \tt \val    & Valeur & \tt \NAME   & \tt /[A-Z][A-Z0-9\_]+/ \\
-  \tt \file   & Chemin de fichier relatif & \tt \expr   & Expression C e.g. \tt a + b \\
+  \tt \etc      & Continuation logique    & \tt \any    & N'importe quoi d'accepté \\
+  \tt /\any/    & Expression régulière    & \tt \spc    & Espace obligatoire \\
+  \cd{type}     & \tt int, long, float, ... & \cd{name} & \tt /[A-Za-z][A-Za-z0-9\_]+/ \\
+  \cd{value}    & Valeur & \cd{NAME} & \tt /[A-Z][A-Z0-9\_]+/ \\
+  \cd{filename} & Chemin de fichier relatif & \cd{expression}   & Expression C e.g. \tt a + b \\
 \end{tabularx}
 
 \section*{Généralités}
@@ -145,23 +127,27 @@ Signification des termes utilisé dans cette carte de référence.
   Concaténation                      & \cd{\#\#} \\
   Exécution conditionelle            & \cd{\#if, \#else, \#elif, \#endif} \\
                                      & \cd{\#ifdef, \#ifndef} \\
+  Pragma                             & \cd{\#pragma}\tt\spc \any \\
+  Reporte une erreur                 & \cd{\#error}\tt\spc \any \\
   Est-ce que \texttt{\NAME} est défini ? & \cd{defined(NAME)} \\
-  Saut de ligne virtuel              & \bs
+  Saut de ligne virtuel              & \cd{\\}
 \end{tabularx}
 
 \section*{Types de données}
 
-\begin{tabularx}{\linewidth}{ccccclX}
-  \multicolumn{5}{l}{\bf Profondeur} & \bf Modèle & \bf Système d'exploitation \\
+\subsection*{Modèle de donnée}
+\begin{tabularx}{\linewidth}{r|r|r|r|r|l|X}
+  \multicolumn{5}{l|}{\bf Profondeur en bits} & \bf Modèle & \bf Système d'exploitation \\
   \cd {short} & \cd{int} & \cd{long} & \cd{long long} & \cd{int*} & & \\
   \hline
-  16 & 32 & 32 & 64 & 64 & LLP64 & Windows x86-64, MinGW \\
-  16 & 32 & 64 & 64 & 64 & LP64 & Unix, Linux, MacOS \\
-  16 & 32 & 32 & 64 & 32 & ILP32 & Windows x86 \\
-  16 & 16 & 32 & 64 & 32 & LP32 & (plus utilisé) \\
+  16 & 32 & 32 & 64 & 64 & \bf \tt LLP64 & Windows x86-64, MinGW \\
+  16 & 32 & 64 & 64 & 64 & \bf \tt LP64 & Unix, Linux, MacOS \\
+  16 & 32 & 32 & 64 & 32 & \bf \tt ILP32 & Windows x86 \\
+  16 & 16 & 32 & 64 & 32 & \bf \tt LP32 & (plus utilisé) \\
 \end{tabularx}
 
-\begin{tabularx}{\linewidth}{Xlll}
+\subsection*{Type de base}
+\begin{tabularx}{\linewidth}{X|l|l|l}
   \bf Description & \bf Type standard & \bf \texttt{<stdint.h>} & \bf Profondeur \\
   \hline
   Caractère                   & \cd{char}      & \cd {int8_t} & 8 bits \\
@@ -170,54 +156,49 @@ Signification des termes utilisé dans cette carte de référence.
   Entier court                & \cd{short}     & \cd {int16_t} & 16 bits \\
   Entier long                 & \cd{long}      & \cd {int32_t} & 32 bits \\
   Entier très long            & \cd{long long} & \cd {int64_t} & 64 bits \\
+  Entier très long (positif)  & \cd{unsigned long long} & \cd {int64_t} & 64 bits \\
   Entier non signé (positif)  & \cd{unsigned int}, \cd{unsigned} & \cd{uint_least16_t} & $\geq$ 16-bits \\
   \hline
   Simple précision            & \cd{float}     &  & 32 bits \\
   Double précision            & \cd{double}    &  & $\geq$ 32 bits \\
 \end{tabularx}
 
+Où \cd{N} est remplacé par un nombre (8, 16, 32, 64, 128):
 
+\begin{tabularx}{\linewidth}{Xl}
+  Type fixe (p.ex. \texttt{int32\_t} & \texttt{int\textbf{N}\_t}, \texttt{uint\textbf{N}\_t} \\
+  Type à taille garantie (p.ex. \texttt{uint\_least8\_t}) & \texttt{int\_least\textbf{N}\_t}, \texttt{uint\_least\textbf{N}\_t} \\
+  Type rapide (p.ex. \texttt{int\_fast64\_t}) & \texttt{int\_fast\textbf{N}\_t}, \texttt{uint\_fast\textbf{N}\_t} \\
+\end{tabularx}
 
-  \begin{tabularx}{\linewidth}{Xl}
-    Non défini                 & \cd{void} \\
-    Entier non signé pour comptage et indexation & \cd{size_t} \\
-    Pointeur sur                       & \cd{*type} \\
-    Énumération                        & \cd{enum name \{name=value, ...\}};
-  \end{tabularx}
+\begin{tabularx}{\linewidth}{Xl}
+  Non défini                 & \cd{void} \\
+  Entier non signé pour comptage et indexation & \cd{size_t} \\
+  Pointeur sur                       & \cd{*type} \\
+  Énumération                        & \cd{enum name \{name=value, ...\}}; \\
+  Structure                          & \cd{struct name \{type name; ... \}}; \\
+  Union                              & \cd{union name \{type name; ... \}}; \\
+\end{tabularx}
 
   \begin{lstlisting}
     typedef struct Foo { int a; int b; } Foo;
     struct { int c; } Bar;
   \end{lstlisting}
 
-  \begin{tabularx}{\linewidth}{Xl}
-  Type fixe & \cd{intN_t} \\
-  Type à taille garantie & \cd{int_leastN_t} \\
-  Type rapide & \cd{int_fastN_t}
-  \end{tabularx}
 
 \section*{Qualificatifs de types}
 
-\begin{tabularx}{\linewidth}{Xl}
-  Constante                           & \cd{const} \\
-  Déclare une variable externe        & \cd{extern} \\
-  Force une variable dans un registre & \cd{register} \\
-  Réduit la visiblité à ce fichier    & \cd{static} \\
-  Impose aucune optimisation par le compilateur & \cd{volatile} \\
-  Limite l'aliasing d'un pointeur     & \cd{restrict} \\
+\begin{tabularx}{\linewidth}{X|l|l}
+  \bf Description                     & \bf Mot clé & \bf Exemple \\
+  \hline
+  Constante                           & \cd{const}    & \cd{const char c = 'u';}\\
+  Déclare une variable externe        & \cd{extern}   & \cd{extern void func(void);}\\
+  Force une variable dans un registre & \cd{register} & \cd{register int i;}\\
+  Réduit la visiblité à ce fichier    & \cd{static}   & \cd{static int array[20];}\\
+  Impose aucune optimisation par le compilateur & \cd{volatile} & \cd{volatile int u;}\\
+  Limite l'aliasing d'un pointeur     & \cd{restrict} & \cd{restrict int* ptr}\\
+  Définition de type                  & \cd{typedef} & \cd{typedef struct {int a;} Name;}\\
 \end{tabularx}
-
-\begin{lstlisting}
-  extern const volatile int real_time_clock;
-\end{lstlisting}
-
-\begin{keylist}
-
-\key{structure}{struct}
-\key{créer un type de donnée}{typedef \texttt{nomdutype}}
-\key{taille d'un objet (renvoie un \texttt{size\_t})}{sizeof \texttt{objet}}
-\key{taille d'un type (renvoie un \texttt{size\_t})}{sizeof(\texttt{type)}}
-\end{keylist}
 
 \section*{Initialisation}
 \begin{tabularx}{\linewidth}{Xl}
@@ -228,17 +209,40 @@ Signification des termes utilisé dans cette carte de référence.
   A zéro & \cd{type name = \{0\};} \\
 \end{tabularx}
 
-\section*{Constantes}
-\begin{keylist}
-\key{long (suffixe)}{L \textrm{ou} l}
-\key{float (suffixe)}{F \textrm{ou} f}
-\key{forme exponentielle}{e}
-\key{octal (zéro préfixe)}{0}
-\key{hexadécimal (zéro x préfixe)}{0x \textrm{ou} OX}
-\key{caractère constant (char, octal, hex)}{'a', '\bs\texttt{ooo}', '\bs{}x\texttt{hh}'}
-\key{nouvelle ligne, cr, tab, bs}{\bs\bs{}, \bs?, \bs', \bs"}
-\key{constante chaîne (se finit par '\texttt{\bs{}0}')}{"abc...de"}
-\end{keylist}
+\section*{Caractères non imprimables et échappements}
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.3\hsize}X% 10% of 4\hsize
+  >{\hsize=1.7\hsize}X% 30% of 4\hsize
+  >{\hsize=0.3\hsize}X% 30% of 4\hsize
+  >{\hsize=1.7\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+
+  \cd{\\n}    & Nouvelle ligne (LF \emph{Line Feed})  & \cd{\\r}    & Retour chariot (CR) \\
+  \cd{\\t}    & Tabulation horizontale & \cd{\\v}    & Tabulation verticale \\
+  \cd{\\f}    & Nouvelle page (FF \emph{Form feed}) & \cd{\\b} & Retour curseur (\emph{Backspace}) \\
+  \cd{\\0}    & Fin de chaîne de caractère          & \cd{\\a} & Signal sonore (\emph{Beep})  \\
+  \cd{\\x...} & Caractère hexadécimal (\cd{\\x2a})  & \cd{\\0...} & Caractère octal (\cd{\\030}) \rule{0pt}{3ex} \\
+  \cd{\\'}    & Apostrophe                          & \cd{\\"}    & Guillemets \\
+  \cd{\\?}    & Point d'interrogation               & \cd{\\\\}    & Backslash \\
+\end{tabularx}
+
+\section*{Notation numérique}
+
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.4\hsize}X% 10% of 4\hsize
+  >{\hsize=1.6\hsize}X% 30% of 4\hsize
+  >{\hsize=0.4\hsize}X% 30% of 4\hsize
+  >{\hsize=1.6\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
+
+  \cd{0xff}    & Hexadécimal & \cd{0b110011}    & Binaire \\
+  \cd{0012}    & Octal & \cd{212}    & Décimale \\
+  \cd{12.0f}   & Simple précision & \cd{12.0}    & Double précision \\
+  \cd{123u}    & Entier non signé       & \cd{42l}     & \cd{long} \\
+  \cd{4312ll}  & \cd{long long} & \cd{12e-3} & Notation en E (0.012) \\
+\end{tabularx}
 
 \section*{Pointeurs, Tableaux et Structures}
 \begin{tabularx}{\linewidth}{Xl}
@@ -251,17 +255,12 @@ Signification des termes utilisé dans cette carte de référence.
 \end{tabularx}
 
 \subsection*{Structures}
-\begin{keylist}
-\keyg{modèle de la structure}{struct \texttt{tag} \{}
-\keyg{déclaration des membres}{\tab\texttt{déclarations}}
-\keyg{}{\};}
-\key{créer une structure}{struct \texttt{tag} \texttt{nom}}
-\key{membre d'une structure}{\texttt{nom}.\texttt{membre}}
-\key{membre d'une structure pointée}{\texttt{pointeur}->\texttt{membre}}
-\exemple{\texttt{(*p).x} et \texttt{p->x} sont le même}
-\key{simple valeur, structure de type multiple}{union}
-\key{champs de bit avec \texttt{b} bits}{\texttt{membre}:\texttt{b}}
-\end{keylist}
+\begin{tabularx}{\linewidth}{Xl}
+  Accès membre d'une structure & \cd{name.member} \\
+  Accès membre d'une structure (pointeur) & \cd{name->member} \\
+  \ \ \cd{(*p).x} et \cd{(p->x)} identique & \\
+  Champs de bits & \cd{type member : size} \\
+\end{tabularx}
 
 \section*{Opérateurs}
 
@@ -336,10 +335,8 @@ Signification des termes utilisé dans cette carte de référence.
   Choix multiples & \cd{switch(expression) \{ case a; instr; break; case b: instr; \}} \\
   \end{tabularx}
 
-
-
 \section*{Bibliothèques Standards}
-  \begin{tabularx}{\linewidth}{ccccc}
+  \begin{tabularx}{\linewidth}{XXXXX}
     \cd{<assert.h>} & \cd{<complex.h>}  & \cd{<ctype.h>}  & \cd{<errno.h>}   & \cd{<fenv.h>} \\
     \cd{<float.h>}  & \cd{<inttypes.h>} & \cd{<limits.h>} & \cd{<locale.h>}  & \cd{<math.h>} \\
     \cd{<setjmp.h>} & \cd{<signal.h>}   & \cd{<stdarg.h>} & \cd{<stdbool.h>} & \cd{<stddef.h>} \\
@@ -347,6 +344,16 @@ Signification des termes utilisé dans cette carte de référence.
     \cd{<time.h>}   &              &            &             & \\
   \end{tabularx}
 
+\section*{Mots clés du langage}
+  \begin{tabularx}{\linewidth}{XXXXX}
+    \cd{auto} & \cd{double}  & \cd{int}  & \cd{struct}   & \cd{break} \\
+    \cd{else}  & \cd{long} & \cd{switch} & \cd{case}  & \cd{enum} \\
+    \cd{register} & \cd{typedef}   & \cd{char} & \cd{extern} & \cd{return} \\
+    \cd{union} & \cd{const}    & \cd{float} & \cd{short}  & \cd{unsigned} \\
+    \cd{continue}   & \cd{for} & \cd{static} & \cd{void} & \cd{default} \\
+    \cd{goto} & \cd{sizeof} & \cd{volatile} & \cd{do} & \cd{if} \\
+    \cd{signed} & \cd{while} & \cd{_Bool} & \cd{_Imaginary} \\
+  \end{tabularx}
 \section*{Tests de classe de caractères \texttt{<ctype.h>}}
 
 \begin{tabularx}{\linewidth}{Xrl}
@@ -424,7 +431,17 @@ Les prototypes ont été volontairement raccourcis pour une meilleure lisibilit�
   Retourne \cd{!0} si fin de fichier & \cd{int feof(FILE *stream);}
 \end{tabularx}
 
-modes: \texttt{r}: lecture; \texttt{w}: écriture; \texttt{a}: ajout
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
+  >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
+  >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
+  }
+  \multicolumn{4}{l}{\bf Modes de lecture (\texttt{mode})} \\
+  \tt r & Lecture & \tt w & Écriture & \tt a & Ajout \\
+  \tt rb & Lecture Binaire & \tt wb & Écriture Binaire & \tt ab & Ajout Binaire \\
+  \tt r+ & Lecture, écriture & \tt w+ & Écriture + efface fichier & \tt a+ & Ouvre ou crée fichier \\
+  \tt rb+ & Identique mais binaire & \tt wb+ & Identique mais binaire & \tt ab+ & Identique mais binaire \\
+\end{tabularx}
 
 \subsection*{Formattage de chaîne de caractères}
 
@@ -567,7 +584,6 @@ struct tm {
 
 Format pour \texttt{asctime}: \cd{"\%.3s \%.3s\%3d \%.2d:\%.2d:\%.2d \%d\\n"}
 
-
 \section*{Fonctions Mathématique \texttt{<math.h>}}
 
 Si non spécifé, le prototype est la forme \cd{double func(double x)}.
@@ -608,21 +624,28 @@ Valeurs pour un modèle de donnée \textbf{LP32}.
   \cd{SHRT_MAX} & +32'767 & \cd{SHRT_MIN} & -32'768 \\
   \cd{INT_MAX} & +2'147'483'647 & \cd{INT_MIN} & -2'147'483'648 \\
   \cd{LONG_MAX} & +2'147'483'647 & \cd{LONG_MIN} & -2'147'483'648 \\
-  \cd{UCHAR_MAX} & 255 & \cd{UINT_MAX} & 4'294'967'295 \\
-  \cd{ULONG_MAX} & 4'294'967'295 & & \\
-
-  \cd{FLT_RADIX} & 2 & & \rule{0pt}{3ex} \\
+  \cd{LLONG_MAX} & +9'223'372'036'854'775'807 & \cd{LLONG_MIN} & -9'223'372'036'854'775'808 \\
+  \cd{UCHAR_MAX} & +255 & \cd{UINT_MAX} & +4'294'967'295 \\
+  \cd{ULONG_MAX} & +4'294'967'295 & \cd{ULLONG_MAX} & +18'446'744'073'709'551'615 \\
+  \cd{FLT_RADIX} & 2 & & \rule{0pt}{2ex} \\
   \cd{FLT_MAX} & \cd{3.4e38} & \cd{FLT_MIN} & \cd{1.2e-38} \\
   \cd{DBL_MAX} & \cd{1.8e308} & \cd{DBL_MIN} & \cd{2.2e-308} \\
   \cd{FLT_EPSILON} & \cd{1.1e-7} & \cd{DBL_EPSILON} & \cd{2.2e-16}
 \end{tabularx}
 
+\section*{Compilation (gcc/clang)}
+\begin{tabularx}{\linewidth}{Xl}
+  \texttt{-O3 -std=c99 -Wall -Wextra} & Options standards \\
+  \texttt{-g} & Débug \\
+  \texttt{cc filename.c} & Compilation simple \\
+  \texttt{cc -o name filename.c} & Compilation simple, choix du nom de l'exécutable \\
+\end{tabularx}
+
+\vfill
 {
   \color{gray}
-  \small
-  (c) 2003-2019 Valvassori Moïse <\texttt{djedi@ai.univ-paris8.fr}> \\
-  (c) 2019 Yves Chevallier <\texttt{yves.chevallier@heig-vd.ch}> \\
-  (c) 1998 Joseph H. Silverman
+  \tiny
+  (c) 2019 Yves Chevallier <\texttt{yves.chevallier@heig-vd.ch}>, (c) 2003-2019 Valvassori Moïse <\texttt{djedi@ai.univ-paris8.fr}>, (c) 1998 Joseph H. Silverman
 }
 \end{multicols*}
 \end{document}
