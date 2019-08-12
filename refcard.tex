@@ -5,7 +5,8 @@
 \usepackage[french]{babel}
 \usepackage[fontsize=6.5pt]{scrextend}
 \usepackage[T1]{fontenc}
-\usepackage[scaled=.8]{beramono}
+%\usepackage[scaled=.7]{beramono} % It looks better without...
+\usepackage{hyperref}
 \usepackage{multicol}
 \usepackage{tabularx}
 \usepackage{tabulary}
@@ -68,7 +69,7 @@
 \newcommand{\file}{\emph{filename}}
 \newcommand{\expr}{\emph{expression}}
 \newcommand{\etc}{\small \ldots}
-\newcommand{\any}{~$\hzigzag$~}
+\newcommand{\any}{$\hzigzag$~}
 \newcommand{\spc}{$\mathvisiblespace$}
 \newcommand{\cd}{\lstinline}
 
@@ -103,7 +104,7 @@ Signification des termes utilisés dans cette carte de référence.
   \cd{value}    & Valeur & \cd{NAME} & \tt /[A-Z][A-Z0-9\_]+/ \\
   \cd{filename} & Chemin de fichier relatif & \cd{expression}   & e.g. \tt a + b \\
 \end{tabularx}
-
+\hrule
 \section*{Généralités}
 \begin{tabularx}{\linewidth}{lX}
   Prototype de fonction               & \cd{type name(type name,} \etc \cd{);} \\
@@ -111,7 +112,7 @@ Signification des termes utilisés dans cette carte de référence.
   Déclaration de variable            & \cd{type name;} \\
   Fonction principale                & \cd{int main(void) \{} \any \cd{\}} \\
   Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
-  Valeur de retour de la fonction principale & \cd{0 == EXIT_SUCCESS}, \cd{1 == EXIT_FAILURE}\\
+  Valeur de retour de la fonction \texttt{main} & \cd{0 == EXIT_SUCCESS}, \cd{1 == EXIT_FAILURE}\\
 \end{tabularx}
 
 \section*{Préprocesseur}
