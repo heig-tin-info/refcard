@@ -1,7 +1,9 @@
 sudo: required
-language: generic
+language: latex
 services: docker
 
+before_install:
+  - docker pull nowox/latex:1.0
+
 script:
-  - docker pull adnrv/texlive
-  - docker run --mount src=$TRAVIS_BUILD_DIR/.,target=/usr/src/tex,type=bind adnrv/texlive /bin/sh -c "make"
+  - make
