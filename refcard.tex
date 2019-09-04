@@ -78,7 +78,7 @@
 \begin{multicols*}{3}
 
 \begin{center}
-  {\Large \bf Carte de référence C99} \\
+  {\Large \bf Carte de référence C99/C11/C18} \\
   HEIG-VD -- version \revision \ -- \revisiondate \\
 \end{center}
 
@@ -182,9 +182,11 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{Xl}
-  Type sur structure   & \cd{typedef struct struct_name \{ int a; int b; \} TypeName;} \\
-  Structure anonyme    & \cd{struct \{ int c; \} name;} \\
-  Structure récursive  & \cd{struct Node \{ struct Node* node \} name;}
+  Type sur structure  & \cd{typedef struct struct_name \{ int a; int b; \} TypeName;} \\
+  Structure anonyme   & \cd{struct \{ int c; \} name;} \\
+  Structure récursive & \cd{struct Node \{ struct Node* node \} name;} \\
+  Liste chaînée       & \cd{typedef struct element \{char *data;} \\
+                      & \cd{\ \ struct element *next;\} element, *list, elements[5];}
 \end{tabularx}
 
 \section*{Qualificatifs de types}
@@ -269,7 +271,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
 \section*{Opérateurs}
 
 \begin{tabularx}{\linewidth}{c|l|X|c}
-  \bf Priorité & \bf Opérateur & \bf Description & \bf Associativité \\
+  \bf Rang$\dagger$ & \bf Opérateur & \bf Description & \bf Associativité \\
   \hline
   \multirow{6}{*}{1} & \cd{++ --}  & Suffix incrément et décrément & \multirow{6}{*}{$\rightarrow$} \\
                      & \cd{()}     & Appel de fonction                     & \\
@@ -318,6 +320,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   15                 & \cd{,}     & Virgule & $\leftarrow$\\
 \end{tabularx}
 
+$\dagger$ Plus le rang est petit, plus l'opérateur est prioritaire.
 
 \section*{Flot de contrôle}
 
@@ -332,7 +335,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   \end{tabularx}
 
   \begin{tabularx}{\linewidth}{Xl}
-  Si, sinon si, sinon & \cd{if (expr) \{}\any\cd{\} else if (expr) \{}\any\cd{\}; else \{}\any\cd{\};} \\
+  Si, sinon si, sinon & \cd{if (expr) \{}\any\cd{\} else if (expr) \{}\any\cd{\} else \{}\any\cd{\};} \\
   Tant que & \cd{while (expr) \{}\any\cd{\}} \\
   Pour & \cd{for (expr, expr, expr) \{}\any\cd{\}} \\
   Jusqu'à ce que & \cd{do \{}\any\cd{\} while (expr);} \\
@@ -422,7 +425,6 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   Écriture formatée & \cd{int printf(char* format, ...)} \\
   Lecture formatée & \cd{int scanf(char* format, ...)} \\
   Lecture dans la chaîne \texttt{s} & \cd{int sscanf(char* s, char* format, ...)} \\
-  Lire une chaîne dans \texttt{s} & \cd{char *gets(char *s)} \\
   Affiche la chaîne \texttt{s} & \cd{int puts(char *s)} \\
   Écrire dans la chaîne \texttt{s} & \cd{int sprintf(char* s, char* format, ...)}  \\
   Ouvre un fichier & \cd{FILE *fopen(char* filename, char* mode)} \\
