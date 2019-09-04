@@ -108,10 +108,10 @@ Signification des termes utilisés dans cette carte de référence.
 \section*{Généralités}
 \begin{tabularx}{\linewidth}{lX}
   Prototype de fonction               & \cd{type name(type name,} \etc \cd{);} \\
-  Implémentation de fonction         & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
+  Implantation de fonction         & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
   Déclaration de variable            & \cd{type name;} \\
   Fonction principale                & \cd{int main(void) \{} \any \cd{\}} \\
-  Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
+  Fonction principale avec paramètres & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
   Valeur de retour de la fonction \texttt{main} & \cd{0 == EXIT_SUCCESS}, \cd{1 == EXIT_FAILURE}\\
 \end{tabularx}
 
@@ -128,7 +128,7 @@ Signification des termes utilisés dans cette carte de référence.
   Concaténation                      & \cd{\#\#} \\
   Exécution conditionelle            & \cd{\#if, \#else, \#elif, \#endif} \\
                                      & \cd{\#ifdef, \#ifndef} \\
-  Pragma                             & \cd{\#pragma}\tt\spc \any \\
+  Directive pour le compilateur      & \cd{\#pragma}\tt\spc \any \\
   Génère une erreur de compilation   & \cd{\#error}\tt\spc \any \\
   Est-ce que \texttt{\NAME} est défini ? & \cd{defined(NAME)} \\
   Saut de ligne virtuel              & \cd{\\}
@@ -164,7 +164,7 @@ Signification des termes utilisés dans cette carte de référence.
   Double précision            & \cd{double}    &  & $\geq$ 32 bits \\
 \end{tabularx}
 
-Avec \cd{<stdint.h}, les types suivants sont disponibles, où \cd{N} est remplacé par un nombre (8, 16, 32, 64, 128), selon disponibilité par l'architecture.
+Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est remplacé par un nombre (8, 16, 32, 64, 128), selon disponibilité par l'architecture.
 
 \begin{tabularx}{\linewidth}{Xl}
   Type fixe (p.ex. \texttt{int32\_t} & \texttt{int\textbf{N}\_t}, \texttt{uint\textbf{N}\_t} \\
@@ -322,7 +322,7 @@ Avec \cd{<stdint.h}, les types suivants sont disponibles, où \cd{N} est remplac
 \section*{Flot de contrôle}
 
   \begin{tabularx}{\linewidth}{Xl}
-    Fin d'instruction & \cd{;} \\
+    Fin d'instruction (instruction vide) & \cd{;} \\
     Délimiteur de blocs & \cd{\{ \}} \\
     Interruption d'un \cd{switch}, \cd{do}, \cd{for} & \cd{break} \\
     Continue à la prochaine itération d'un \cd{while}, \cd{do}, \cd{for} & \cd{continue} \\
@@ -422,7 +422,7 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   Écriture formatée & \cd{int printf(char* format, ...)} \\
   Lecture formatée & \cd{int scanf(char* format, ...)} \\
   Lecture dans la chaîne \texttt{s} & \cd{int sscanf(char* s, char* format, ...)} \\
-  Lire une lire dans \texttt{s} & \cd{char *gets(char *s)} \\
+  Lire une chaîne dans \texttt{s} & \cd{char *gets(char *s)} \\
   Affiche la chaîne \texttt{s} & \cd{int puts(char *s)} \\
   Écrire dans la chaîne \texttt{s} & \cd{int sprintf(char* s, char* format, ...)}  \\
   Ouvre un fichier & \cd{FILE *fopen(char* filename, char* mode)} \\
@@ -436,8 +436,8 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   Lire une ligne & \cd{char *fgets(char* s, int n, FILE* fp)} \\
   Écrire une ligne & \cd{int fputs(char* s, FILE* fp)} \\
 
-  Écriture formattée & \cd{int fprintf(FILE* fp, char* format, ...)} \\
-  Lecture formattée & \cd{int fscanf(FILE* fp, char* format, ...)} \\
+  Écriture avec gabarit & \cd{int fprintf(FILE* fp, char* format, ...)} \\
+  Lecture avec gabarit & \cd{int fscanf(FILE* fp, char* format, ...)} \\
 
   Retourne \cd{0} si pas d'erreur & \cd{int ferror(FILE *fp)} \\
   Retourne \cd{!0} si fin de fichier & \cd{int feof(FILE *fp)} \\
@@ -454,7 +454,7 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
   }
   \multicolumn{4}{l}{\bf Modes de lecture (\texttt{mode})} \\
-  \tt r & Lecture & \tt w & Écriture & \tt a & Ajout \\
+  \tt r & Lecture & \tt w & Écriture (écrase éxistant) & \tt a & Ajout \\
   \tt rb & Lecture Binaire & \tt wb & Écriture Binaire & \tt ab & Ajout Binaire \\
   \tt r+ & Lecture, écriture & \tt w+ & Écriture + efface fichier & \tt a+ & Ouvre ou crée fichier \\
   \tt rb+ & Identique mais binaire & \tt wb+ & Identique mais binaire & \tt ab+ & Identique mais binaire \\
@@ -578,7 +578,7 @@ Considérant le format \texttt{\%[flags][width][.precision][length]type}
   Conversion d'une temps locale & \cd{struct tm *localtime(const time_t *timer)} \\
   Représentation texte & \cd{char *asctime(const struct tm *timeptr)} \\
   Représentation texte & \cd{char *ctime(const time_t *timer)} \\
-  Formattage d'un temps & \cd{size_t strftime(char *str, size_t maxsize,} \\
+  Gabarit d'un temps & \cd{size_t strftime(char *str, size_t maxsize,} \\
                      & \cd{\ \ \ \ char *format, struct tm *timeptr)} \\
 \end{tabularx}
 
@@ -651,10 +651,11 @@ Valeurs pour un modèle de donnée \textbf{LP32}.
 
 \section*{Compilation (gcc/clang)}
 \begin{tabularx}{\linewidth}{Xl}
-  \texttt{-O3 -std=c99 -Wall -Wextra} & Options standards \\
+  \texttt{-O2 -std=c99 -Wall -Wextra -Wconversion} & Options standards \\
   \texttt{-g} & Débug \\
   \texttt{cc filename.c} & Compilation simple \\
-  \texttt{cc -o name filename.c} & Compilation simple, choix du nom de l'exécutable \\
+  \texttt{cc -o name filename.c} & Compilation simple, \\
+  & choix du nom de l'exécutable \\
 \end{tabularx}
 
 \end{multicols*}
