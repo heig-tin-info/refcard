@@ -1,12 +1,17 @@
 sudo: required
 language: latex
 services: docker
-
 before_install:
-  - docker pull nowox/latex:1.0
-
+- docker pull nowox/latex:1.0
 script:
-  - make
-  
+- make
 addons:
   artifacts: true
+deploy:
+  provider: releases
+  api_key:
+    secure: Whredy2y4bk0TDv2XEnuavywv0a8XJZLnaRjO5OKQ+e6pI1YlPA2R6O3HRM+jUysu5xRy/VLVjuvEe5n7kcp6MgKxBoYZhmp6Jj+N8MRiMbenrfDGv9mmAGwm+xGQtmx4BEg4nOTHm05hpR/ZvUH0SyvKL2i0chsOpeOq1jawMx5plKqYVvJ21NwLs+SKdtJy/dqdvSe1ig5dWX8FcBcQyjgsKzochye53nuLglApBhXyUY1XaBopyZxfp51mhE1sFHO8l4LDQ+4dscK9r8fRDsoPCBqLlwJ3ZbwBETp6CjokesoTlT7ORE6KlaFC1b3AkR8+LEmC3kLPd9OaHDt6KayJzQMYUHaDJynKCpxxsn3Y+rWVqI3lTbxLoI9o2czlr3vEe6AsYFc81w8WcdTMwObU+FcI8TVa7XTZvPJ0mV4RjmKwDuNEBxzYT/LDVAYEAwLnV7lg/CoJknX3Lg60n/+ZiuV+KNm2EUhD+Q7i/Z7btYna/MLS9y8pAWUsTeU+/b/+DSu0efhxxFjCh612Q7iofdKt05f3pjPNQxfZ3yHOzxIam+nNXT1Bk9+aiv+EYjU8nIdHswK6vGzAekZmvdR4JjTtFFLjXTCC/TRrbU1EemPWwO1qURv1RevqLIFEWANgXihDZrh3Y9xBKb4/8ejzDcXmyTIz1xgR2+O+pk=
+  file: 'refcard.pdf'
+  skip_cleanup: true
+  on:
+    tags: true
