@@ -281,7 +281,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
                      & \cd{(type)\{list\}} & \emph{Compound litéral} & \\
   \hline
   \multirow{7}{*}{2} & \cd{++ --}  & Préfixe incrément et décrément & \multirow{7}{*}{$\leftarrow$} \\
-                     & \cd{+ -}    & Plus, moins unitaire & \\
+                     & \cd{+ -}    & Plus, moins unaire (\cd{+2}, \cd{-2}) & \\
                      & \cd{! ~}    & Négation logique et bit à bit & \\
                      & \cd{(type)} & Transtypage (\emph{cast}) & \\
                      & \cd{*}      & Indirection (déréférencement) & \\
@@ -309,7 +309,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   \cline{1-3}
   12                 & \cd{||}     & OU logique & \\
   \hline
-  13                 & \cd{?:}     & Opérateur ternaire & \multirow{6}{*}{$\rightarrow$} \\
+  13                 & \cd{?:}     & Opérateur ternaire & \multirow{6}{*}{$\leftarrow$} \\
   \cline{1-3}
   \multirow{5}{*}{14} & \cd{=}      & Assignement simple & \\
                      & \cd{+= -=}  & Assignement avec somme, différence & \\
@@ -317,7 +317,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
                      & \cd{<<= >>=}  & Assignement avec décalage & \\
                      & \cd{&= ^= |=} & Assignement avec opération bit à bit & \\
   \hline
-  15                 & \cd{,}     & Virgule & $\leftarrow$\\
+  15                 & \cd{,}     & Virgule & $\rightarrow$\\
 \end{tabularx}
 
 $\dagger$ Plus le rang est petit, plus l'opérateur est prioritaire.
