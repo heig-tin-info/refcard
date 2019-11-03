@@ -1,4 +1,4 @@
-PWD!=pwd | sed 's/^\/mnt//'
+PWD!=pwd -P | sed 's/^\/mnt//'
 DOCKER=docker run -it -v "$(PWD):/srv" -w=/srv nowox/latex:1.0
 
 all: refcard.tex revision.tex
