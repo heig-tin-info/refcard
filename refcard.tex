@@ -396,19 +396,19 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
 
 \begin{tabularx}{\linewidth}{Xl}
   Longueur de \texttt{s} & \cd{size_t strlen(char *s)} \\
-  Copie \texttt{s1} dans \texttt{s2} & \cd{char *strcpy(char* s1, char* s2)} \\
-   ... jusqu'à \texttt{n} caractères & \cd{char *strncpy(char* s1, char* s2, size_t n)} \\
-  Concatène \texttt{s1} après \texttt{s2} & \cd{char *strcat(char* s1, char* s2)} \\
-   ... jusqu'à \texttt{n} caractères & \cd{char *strncat(char* s1, char* s2, size_t n)} \\
+  Copie \texttt{src} dans \texttt{dest} & \cd{char *strcpy(char* dest, char* src)} \\
+   ... jusqu'à \texttt{n} caractères & \cd{char *strncpy(char* dest, char* src, size_t n)} \\
+  Concatène \texttt{src} après \texttt{dest} & \cd{char *strcat(char* dest, char* src)} \\
+   ... jusqu'à \texttt{n} caractères & \cd{char *strncat(char* dest, char* src, size_t n)} \\
   Compare \texttt{s1} à \texttt{s2} & \cd{int strcmp(char *s1, char *s2)} \\
-   ... seulement \texttt{n} premiers caractères & \cd{int strncmp(char *s1, char *s2, size_t n)} \\
+   ... seulement \texttt{n} caractères & \cd{int strncmp(char *s1, char *s2, size_t n)} \\
   Pointeur sur le premier \texttt{c} dans \texttt{s} & \cd{char *strchr(char *s, int c)} \\
   Pointeur sur le dernier \texttt{c} dans \texttt{s} & \cd{char *strrchr(char *s, int c)} \\
   \hline
-  Copie \texttt{n} caractères de \texttt{s2} dans \texttt{s1} & \cd{void *memcpy(void* s1, void* s2, size_t n)} \\
-  Copie \texttt{n} caractères de \texttt{s2} dans \texttt{s1} $\dagger$ & \cd{void *memmove(void* s1, void* s2, size_t n)} \\
-  Compare \texttt{n} caractères de \texttt{s2} avec \texttt{s1} & \cd{int memcmp(void *s1, void *s2, size_t n)} \\
-  Cherche \texttt{c} dans \texttt{s} sur \texttt{n} caractères & \cd{void *memchr(void *s, int c, size_t n)} \\
+  Copie \texttt{n} char de \texttt{s2} dans \texttt{s1} & \cd{void *memcpy(void* s1, void* s2, size_t n)} \\
+  Copie \texttt{n} char de \texttt{s2} dans \texttt{s1} $\dagger$ & \cd{void *memmove(void* s1, void* s2, size_t n)} \\
+  Compare \texttt{n} char de \texttt{s2} avec \texttt{s1} & \cd{int memcmp(void *s1, void *s2, size_t n)} \\
+  Cherche \texttt{c} dans \texttt{s} sur \texttt{n} char & \cd{void *memchr(void *s, int c, size_t n)} \\
   Initialise \texttt{s} de longueur \texttt{n} à \texttt{c} & \cd{void *memset(void *s, int c, size_t n)} \\
 \end{tabularx}
 
