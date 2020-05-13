@@ -464,12 +464,14 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
   >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
   }
-  \multicolumn{4}{l}{\bf Modes de lecture (\texttt{mode})} \\
-  \tt r & Lecture & \tt w & Écriture (écrase éxistant) & \tt a & Ajout \\
-  \tt rb & Lecture Binaire & \tt wb & Écriture Binaire & \tt ab & Ajout Binaire \\
-  \tt r+ & Lecture, écriture & \tt w+ & Écriture + efface fichier & \tt a+ & Ouvre ou crée fichier \\
-  \tt rb+ & Identique mais binaire & \tt wb+ & Identique mais binaire & \tt ab+ & Identique mais binaire \\
+  \multicolumn{4}{l}{\bf Modes d'ouverture de fichiers (\texttt{mode})} \\
+  \tt r & Lecture & \tt w & Écriture & \tt a & Ajout \\
+  \tt b & \multicolumn{5}{l}{Mode binaire, les \textbf{LF} (\cd{\\n}) sont converti en \textbf{CRLF} (\cd{\\r\\n}) sous Windows} \\
+  \tt + & \multicolumn{5}{l}{Mode lecture/écriture le fichier peut être écrit et lu} \\
 \end{tabularx}
+
+Les options \cd{w+}, \cd{wb+} et \cd{w} créent le fichier si inexistant ou l'efface s'il existe. \\
+Attention le mode est une chaîne de caractère (p.ex. \cd{"rb+"}).
 
 \subsection*{Formattage de chaîne de caractères}
 
