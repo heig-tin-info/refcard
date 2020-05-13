@@ -17,9 +17,3 @@ L'écosystème de compilation s'appuie sur Docker. Vous devez avoir installé do
 ```
 make
 ```
-
-## Distribution
-
-```
-$ sudo apt-get install texlive-lang-french
-```
