@@ -28,7 +28,7 @@
   keywordstyle=\bfseries\color{black},
   basicstyle=\ttfamily\color{black},
   emphstyle={\em \color{gray}},
-  emph={expression, expr, type, NAME, name, expr, value, filename, label, member, type},
+  emph={expr, type, NAME, ptr, name, expr, value, filename, label, member, type},
   mathescape=true,
   keepspaces=true,
   showspaces=false,
@@ -62,12 +62,6 @@
 
 % Macros
 \newcommand{\tab}{\hspace{2em}}
-\newcommand{\type}{\emph{type}}
-\newcommand{\name}{\emph{name}}
-\newcommand{\val}{\emph{value}}
-\newcommand{\NAME}{\emph{NAME}}
-\newcommand{\file}{\emph{filename}}
-\newcommand{\expr}{\emph{expression}}
 \newcommand{\etc}{\small \ldots}
 \newcommand{\any}{$\hzigzag$~}
 \newcommand{\spc}{$\mathvisiblespace$}
@@ -102,26 +96,26 @@ Signification des termes utilisés dans cette carte de référence.
   \tt /\any/    & Expression régulière    & \tt \spc    & Espace obligatoire \\
   \cd{type}     & \tt int, long, float, ... & \cd{name} & \tt /[A-Za-z][A-Za-z0-9\_]+/ \\
   \cd{value}    & Valeur & \cd{NAME} & \tt /[A-Z][A-Z0-9\_]+/ \\
-  \cd{filename} & Chemin de fichier relatif & \cd{expression}   & e.g. \tt a + b \\
+  \cd{filename} & Chemin de fichier relatif & \cd{expr}   & e.g. \tt a + b \\
 \end{tabularx}
 \hrule
 \section*{Généralités}
 \begin{tabularx}{\linewidth}{lX}
-  Prototype de fonction               & \cd{type name(type name,} \etc \cd{);} \\
-  Implantation de fonction         & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
+  Prototype de fonction              & \cd{type name(type name,} \etc \cd{);} \\
+  Implantation de fonction           & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
   Déclaration de variable            & \cd{type name;} \\
   Fonction principale                & \cd{int main(void) \{} \any \cd{\}} \\
-  Fonction principale avec paramètres & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
-  Valeur de retour de la fonction \texttt{main} & \cd{0 == EXIT_SUCCESS}, \cd{1 == EXIT_FAILURE}\\
+  Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
+  Valeur de retour de la fonction \texttt{main} & \cd{0} en cas de succès, \cd{!0} sinon\\
 \end{tabularx}
 
 \section*{Préprocesseur}
 \begin{tabularx}{\linewidth}{Xl}
   Inclure bibliothèque globale       & \cd{\#include <filename>} \\
   Inclure bibliothèque locale        & \cd{\#include "filename"} \\
-  Remplacer un texte                 & \cd{\#define NAME expression} \\
-  Macro                              & \cd{\#define NAME(expr, ...) expression} \\
-  ...exemple                         & \cd{\#define max(A,B) ((A)>(B) ? (A) : (B))} \\
+  Remplacer un texte                 & \cd{\#define NAME expr} \\
+  Macro                              & \cd{\#define NAME(expr, ...) expr} \\
+  ...exemple                         & \cd{\#define MAX(A,B) ((A)>(B) ? (A) : (B))} \\
   Supprimer une définition           & \cd{\#undef NAME} \\
   Conversion en chaîne de caractères & \cd{\#} \\
   ...exemple                         & \cd{\#define STR(X) \#X} \\
@@ -130,7 +124,7 @@ Signification des termes utilisés dans cette carte de référence.
                                      & \cd{\#ifdef, \#ifndef} \\
   Directive pour le compilateur      & \cd{\#pragma}\tt\spc \any \\
   Génère une erreur de compilation   & \cd{\#error}\tt\spc \any \\
-  Est-ce que \texttt{\NAME} est défini ? & \cd{defined(NAME)} \\
+  Est-ce que \cd{NAME} est défini ?  & \cd{defined(NAME)} \\
   Saut de ligne virtuel              & \cd{\\}
 \end{tabularx}
 
@@ -176,6 +170,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
 \begin{tabularx}{\linewidth}{Xl}
   Non défini                 & \cd{void} \\
   Entier non signé pour comptage et indexation & \cd{size_t} \\
+  Entier non signé capable de stoquer une adresse & \cd{uniptr_t} \\
   Pointeur sur                       & \cd{*type} \\
   Énumération                        & \cd{enum name \{name=value, ...\}}; \\
   Structure                          & \cd{struct name \{type name; ... \}}; \\
@@ -190,7 +185,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
                       & \cd{\ \ struct element *next;\} element, *list, elements[5];}
 \end{tabularx}
 
-\section*{Qualificatifs de types}
+\section*{Qualificatifs de types, classes de stockage}
 
 \begin{tabularx}{\linewidth}{X|l|l}
   \bf Description                     & \bf Mot clé & \bf Exemple \\
@@ -199,8 +194,8 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   Déclare une variable externe        & \cd{extern}   & \cd{extern void func(void);}\\
   Force une variable dans un registre & \cd{register} & \cd{register int i;}\\
   Réduit la visiblité à ce fichier    & \cd{static}   & \cd{static int array[20];}\\
-  Impose aucune optimisation par le compilateur & \cd{volatile} & \cd{volatile int u;}\\
-  Limite l'aliasing d'un pointeur     & \cd{restrict} & \cd{restrict int* ptr}\\
+  Pas d'optimisation pour ce symbole  & \cd{volatile} & \cd{volatile int u;}\\
+  Limite l'aliasing d'un pointeur     & \cd{restrict} & \cd{int * restrict ptr}\\
   Définition de type                  & \cd{typedef} & \cd{typedef struct\{int a;\} Name;}\\
 \end{tabularx}
 
@@ -210,7 +205,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   Tableau & \cd{type name[] = \{value, ...\}}; \\
   Chaîne de caractère & \cd{type name[] = "...";} \\
   Stucture & \cd{type name = \{.key=value, ...\};} \\
-  A zéro & \cd{type name = \{0\};} \\
+  À zéro & \cd{type name = \{0\};} \\
 \end{tabularx}
 
 \section*{Caractères non imprimables et échappements}
@@ -261,14 +256,15 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   Adresse de variable & \cd{\&name} \\
   Déclaration de tableau & \cd{type name[size];} \\
                          & \cd{type name[size][size];}, ... \\
+  Équivalence & \cd{a[b]}, \cd{b[a]}, \cd{*(a + b)}
 \end{tabularx}
 
 \subsection*{Structures}
 \begin{tabularx}{\linewidth}{Xl}
-  Accès membre d'une structure & \cd{name.member} \\
-  Accès membre d'une structure (pointeur) & \cd{name->member} \\
-  \ \ \cd{(*p).x} et \cd{(p->x)} identique & \\
-  Champs de bits & \cd{type member : size} \\
+  Accès membre d'une structure & \cd{name.member}, \cd{ptr->member} \\
+  Accès en cas de double pointeur & \cd{(*name)->member} \\
+  Équivalence & \cd{(*ptr).member} et \cd{(ptr->member)}  \\
+  Champs de bits (taille en bit) & \cd{type member : size} \\
 \end{tabularx}
 
 \section*{Opérateurs}
@@ -345,9 +341,9 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
 
   \begin{tabularx}{\linewidth}{Xl}
   Si, sinon si, sinon & \cd{if (expr) \{}~\any\cd{\} else if (expr) \{}~\any\cd{\} else \{}~\any\cd{\};} \\
-  Tant que & \cd{while (expr) \{}\any\cd{\}} \\
-  Pour & \cd{for (expr, expr, expr) \{}\any\cd{\}} \\
-  Jusqu'à ce que & \cd{do \{}\any\cd{\} while (expr);} \\
+  Tant que & \cd{while (expr) \{}~\any\cd{\}} \\
+  Pour & \cd{for (expr, expr, expr) \{}~\any\cd{\}} \\
+  Jusqu'à ce que & \cd{do \{}~\any\cd{\} while (expr);} \\
   Choix multiples & \cd{switch(expr) \{ case a: instr; break; case b: instr; \}} \\
   \end{tabularx}
 
@@ -360,16 +356,52 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
     \cd{<time.h>}   &              &            &             & \\
   \end{tabularx}
 
-\section*{Mots clés du langage}
-  \begin{tabularx}{\linewidth}{XXXXX}
-    \cd{auto} & \cd{double}  & \cd{int}  & \cd{struct}   & \cd{break} \\
-    \cd{else}  & \cd{long} & \cd{switch} & \cd{case}  & \cd{enum} \\
-    \cd{register} & \cd{typedef}   & \cd{char} & \cd{extern} & \cd{return} \\
-    \cd{union} & \cd{const}    & \cd{float} & \cd{short}  & \cd{unsigned} \\
-    \cd{continue}   & \cd{for} & \cd{static} & \cd{void} & \cd{default} \\
-    \cd{goto} & \cd{sizeof} & \cd{volatile} & \cd{do} & \cd{if} \\
-    \cd{signed} & \cd{while} & \cd{_Bool} & \cd{_Imaginary} & \cd{_Complex} \\
-    \cd{restrict} & \cd{inline} &  &  &  \\
+\section*{Mots clés du langage (C11)}
+  \begin{tabularx}{\linewidth}{XXXXXXXX}
+    \cd{auto} &
+    \cd{break} &
+    \cd{case} &
+    \cd{char} &
+    \cd{const} &
+    \cd{continue} &
+    \cd{default} &
+    \cd{do} \\
+    \cd{double} &
+    \cd{else} &
+    \cd{enum} &
+    \cd{extern} &
+    \cd{float} &
+    \cd{for} &
+    \cd{goto} &
+    \cd{if} \\
+    \cd{inline} &
+    \cd{int} &
+    \cd{long} &
+    \cd{register} &
+    \cd{restrict} &
+    \cd{return} &
+    \cd{short} &
+    \cd{signed} \\
+    \cd{sizeof} &
+    \cd{static} &
+    \cd{struct} &
+    \cd{switch} &
+    \cd{typedef} &
+    \cd{union} &
+    \cd{unsigned} &
+    \cd{void} \\
+    \cd{volatile} &
+    \cd{while} &
+    \cd{_Alignas} &
+    \cd{_Alignof} &
+    \cd{_Atomic} &
+    \cd{_Bool} &
+    \cd{_Complex} &
+    \cd{_Generic} \\
+    \multicolumn{2}{l}{\cd{_Imaginary}} &
+    \multicolumn{2}{l}{\cd{_Noreturn}} &
+    \multicolumn{2}{l}{\cd{_Static_assert}} &
+    \multicolumn{2}{l}{\cd{_Thread_local}}
   \end{tabularx}
 \section*{Tests de classe de caractères \texttt{<ctype.h>}}
 
@@ -378,10 +410,10 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
   \hline
   Alphanumérique ?        & \texttt{/[0-9a-zA-Z]/} & \cd{int isalnum(int c)} \\
   Alphabétique ?          & \texttt{/[a-zA-Z]/} & \cd{int isalpha(int c)} \\
-  Chiffre                 & \texttt{/[0-9]/} & \cd{int isdigit(int c)} \\
+  Chiffre ?               & \texttt{/[0-9]/} & \cd{int isdigit(int c)} \\
   Caractère de contrôle ? & \footnotesize $[0\dots32, 127]$  & \cd{int iscntrl(int c)} \\
-  Caractère imprimable    & \footnotesize $[33\dots 126]$ & \cd{int isgraph(int c)} \\
-  Caractère imprimable avec espace & \footnotesize$[32\dots 126]$ & \cd{int isprint(int c)} \\
+  Caractère imprimable ?  & \footnotesize $[33\dots 126]$ & \cd{int isgraph(int c)} \\
+  Caractère imprimable avec espace ? & \footnotesize$[32\dots 126]$ & \cd{int isprint(int c)} \\
   Minuscule ?             & \footnotesize $[97\dots 122]$ & \cd{int islower(int c)} \\
   Majuscule ?             & \footnotesize $[65\dots 90]$ & \cd{int isupper(int c)} \\
   Espaces ?               & \footnotesize $[9\dots13,32]$ & \cd{int isspace(int c)} \\
@@ -464,14 +496,15 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
   >{\hsize=0.2\hsize}X >{\hsize=1.8\hsize}X
   }
-  \multicolumn{4}{l}{\bf Modes d'ouverture de fichiers (\texttt{mode})} \\
+  \multicolumn{4}{l}{\bf Modes d'ouverture de fichiers (\cd{/"[rwa]b?\\+?"/})} \\
   \tt r & Lecture & \tt w & Écriture & \tt a & Ajout \\
   \tt b & \multicolumn{5}{l}{Mode binaire, les \textbf{LF} (\cd{\\n}) sont converti en \textbf{CRLF} (\cd{\\r\\n}) sous Windows} \\
   \tt + & \multicolumn{5}{l}{Mode lecture/écriture le fichier peut être écrit et lu} \\
 \end{tabularx}
 
 Les options \cd{w+}, \cd{wb+} et \cd{w} créent le fichier si inexistant ou l'efface s'il existe. \\
-Attention le mode est une chaîne de caractère (p.ex. \cd{"rb+"}).
+Ne pas oublier que
+le mode est une chaîne de caractère (p.ex. \cd{"rb+"}, pas \cd{'rb+'}). \\
 
 \subsection*{Formattage de chaîne de caractères}
 
@@ -517,12 +550,18 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
   \cd{g}, \cd{G} & \multicolumn{3}{l}{Double en format le plus adapté normal (\cd{f}, \cd{F}) ou exponentiel (\cd{e}, \cd{E})} \\
 \end{tabularx}
 
+\begin{tabularx}{\linewidth}{Xl}
+    \multicolumn{2}{l}{\bf Exemples pour \cd{scanf}} \\
+    Consomme jusqu'à la prochaine fin de ligne & \cd{scanf("\%*[^\\n]\%*[\\n]")} \\
+    Capture seulement une voyelle & \cd{scanf("\%[aeiouy]", \&name)} \\
+\end{tabularx}
+
 \section*{Utilitaires Standard \texttt{<stdlib.h>}}
 
 \begin{tabularx}{\linewidth}{Xl}
   \multicolumn{2}{l}{\bf Macros} \\
-  Code de fin: succès & \cd{EXIT_SUCCESS} \\
-  Code de fin: erreur & \cd{EXIT_FAILURE} \\
+  Code de fin pour \cd{exit()} indiquant un succès & \cd{EXIT_SUCCESS} \\
+  Code de fin pour \cd{exit()} indiquant une erreur & \cd{EXIT_FAILURE} \\
   Pointeur null & \cd{NULL} \\
   Valeur aléatoire maximum & \cd{RAND_MAX} \\
 \end{tabularx}
