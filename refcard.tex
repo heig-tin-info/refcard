@@ -170,7 +170,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
 \begin{tabularx}{\linewidth}{Xl}
   Non défini                 & \cd{void} \\
   Entier non signé pour comptage et indexation & \cd{size_t} \\
-  Entier non signé capable de stoquer une adresse & \cd{uniptr_t} \\
+  Entier non signé capable de stocker une adresse & \cd{uniptr_t} \\
   Pointeur sur                       & \cd{*type} \\
   Énumération                        & \cd{enum name \{name=value, ...\}}; \\
   Structure                          & \cd{struct name \{type name; ... \}}; \\
@@ -195,7 +195,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   Force une variable dans un registre & \cd{register} & \cd{register int i;}\\
   Réduit la visiblité à ce fichier    & \cd{static}   & \cd{static int array[20];}\\
   Pas d'optimisation pour ce symbole  & \cd{volatile} & \cd{volatile int u;}\\
-  Limite l'aliasing d'un pointeur     & \cd{restrict} & \cd{int * restrict ptr}\\
+  Limite l'aliasing d'un pointeur     & \cd{restrict} & \cd{int * restrict ptr};\\
   Définition de type                  & \cd{typedef} & \cd{typedef struct\{int a;\} Name;}\\
 \end{tabularx}
 
@@ -488,7 +488,7 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
 
 \begin{tabularx}{\linewidth}{Xl}
   Lecture & \cd{size_t fread(void *p, size_t size, size_t n, FILE *fp)} \\
-  Écriture & \cd{size_t size_t fwrite(void *p, size_t size, size_t n, FILE *fp)} \\
+  Écriture & \cd{size_t fwrite(void *p, size_t size, size_t n, FILE *fp)} \\
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{
@@ -604,7 +604,7 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
   Récupère l'environment & \cd{char* getenv (const char* name);} \\
 
   \multicolumn{2}{l}{\bf Allocation de mémoire dynamique} \rule{0pt}{3ex} \\
-  Alloue un tabeau initialisé & \cd{void* calloc (size_t num, size_t size);} \\
+  Alloue un tableau initialisé & \cd{void* calloc (size_t num, size_t size);} \\
   Alloue un bloc mémoire & \cd{void* malloc (size_t size);} \\
   Réalloue un bloc mémoire & \cd{void* realloc (void* ptr, size_t size);} \\
   Désalloue un bloc mémoire & \cd{void free (void* ptr);} \\
@@ -629,8 +629,8 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
   Temps calendrier courante & \cd{time_t time(time_t *timer)} \\
   Différence de temps en secondes & \cd{double difftime(time_t time1, time_t time2)} \\
   Conversion en temps calendrier & \cd{time_t mktime(struct tm *timeptr)} \\
-  Conversion d'une temps calendrier & \cd{struct tm *gmtime(const time_t *timer)} \\
-  Conversion d'une temps locale & \cd{struct tm *localtime(const time_t *timer)} \\
+  Conversion d'un temps calendrier & \cd{struct tm *gmtime(const time_t *timer)} \\
+  Conversion d'un temps locale & \cd{struct tm *localtime(const time_t *timer)} \\
   Représentation texte & \cd{char *asctime(const struct tm *timeptr)} \\
   Représentation texte & \cd{char *ctime(const time_t *timer)} \\
   Gabarit d'un temps & \cd{size_t strftime(char *str, size_t maxsize,} \\
