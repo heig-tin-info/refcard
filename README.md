@@ -1,6 +1,6 @@
 # Carte de référence pour étudiants
 
-[![Build Status](https://travis-ci.org/heig-vd-tin/refcard.svg?branch=master)](https://travis-ci.org/heig-vd-tin/refcard)
+![.github/workflows/ci.yml](https://github.com/heig-tin-info/refcard/workflows/.github/workflows/ci.yml/badge.svg)
 
 Cette carte de référence est destinée à accompagner l'étudiant durant ses études d'ingénieur. Elle est en principe autorisée durant les travaux écrits et examens ; à confirmer par le professeur en charge de dispenser la matière.
 
