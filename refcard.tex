@@ -230,7 +230,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   \cd{\\?}    & & Point d'interrogation                 & \cd{\\\\}   &  & Backslash \\
 \end{tabularx}
 
-\section*{Notation numérique (constantes littérales)}
+\section*{Constantes littérales}
 
 \begin{tabularx}{\linewidth}{
   >{\hsize=0.5\hsize}X% 10% of 4\hsize
@@ -242,8 +242,8 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
 
   \cd{0xff}    & Hexadécimal (\texttt{int}) & \cd{0b110011}    & Binaire (non standard) \\
   \cd{0012}    & Octal & \cd{212}    & Décimale \\
-  \cd{12.0f}   & Simple précision & \cd{12.0}    & Double précision \\
-  \cd{123u}    & Entier non signé       & \cd{42l}     & \cd{long} \\
+  \cd{12.0f}   & Simple précision (\cd{float})& \cd{12.0}    & Double précision (\cd{double})\\ \hline
+  \cd{123u}    & Entier non signé (\cd{unsigned}) & \cd{42l}     & Entier \cd{long} \\
   \cd{4312ll}  & \cd{long long} & \cd{12e-3} ou \cd{12E-3} & Notation en E (\cd{double})
 \end{tabularx}
 \subsubsection*{Suffixes (qualificatifs de type) :}
