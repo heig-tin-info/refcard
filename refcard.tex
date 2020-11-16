@@ -41,6 +41,7 @@
 
 \sectionfont{\fontsize{12}{15}\selectfont}
 \subsectionfont{\fontsize{10}{12}\selectfont}
+\subsubsectionfont{\fontsize{7}{9}\selectfont}
 
 \allsectionsfont{\sffamily\underline}
 
@@ -48,8 +49,9 @@
 \pagenumbering{gobble}
 
 % Titles and paragraphs more compact
-\titlespacing*{\section}{0pt}{1ex plus .2ex minus 0.1ex}{1ex plus .2ex minus 0.1ex}
-\titlespacing*{\subsection}{0pt}{1ex plus .2ex minus 0.1ex}{1ex plus .2ex minus 0.1ex}
+\titlespacing*{\section}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\subsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
+\titlespacing*{\subsubsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
 
 \newlength\mybaselinestretch
 \mybaselinestretch=0pt plus 0.02pt\relax
@@ -231,8 +233,8 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
 
 \begin{tabularx}{\linewidth}{
   >{\hsize=0.5\hsize}X% 10% of 4\hsize
-  >{\hsize=1.5\hsize}X% 30% of 4\hsize
-  >{\hsize=0.5\hsize}X% 30% of 4\hsize
+  >{\hsize=1.1\hsize}X% 30% of 4\hsize
+  >{\hsize=0.9\hsize}X% 30% of 4\hsize
   >{\hsize=1.5\hsize}X% 30% of 4\hsize
      % sum=4.0\hsize for 4 columns
   }
@@ -241,7 +243,16 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   \cd{0012}    & Octal & \cd{212}    & Décimale \\
   \cd{12.0f}   & Simple précision & \cd{12.0}    & Double précision \\
   \cd{123u}    & Entier non signé       & \cd{42l}     & \cd{long} \\
-  \cd{4312ll}  & \cd{long long} & \cd{12e-3} & Notation en E (0.012) \\ \hline
+  \cd{4312ll}  & \cd{long long} & \cd{12e-3} ou \cd{12E-3} & Notation en E (\cd{double})
+\end{tabularx}
+\subsubsection*{Suffixes (qualificatifs de type) :}
+\begin{tabularx}{\linewidth}{
+  >{\hsize=0.5\hsize}X% 10% of 4\hsize
+  >{\hsize=1.1\hsize}X% 30% of 4\hsize
+  >{\hsize=0.9\hsize}X% 30% of 4\hsize
+  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+     % sum=4.0\hsize for 4 columns
+  }
   \cd{u} ou \cd{U}  & \cd{unsigned int} & \cd{l} ou \cd{L} & \cd{long int} \\
   \cd{ll} ou \cd{LL}  & \cd{long long int} & \cd{ull} & \cd{unsigned long long int} \\
 \end{tabularx}
@@ -547,6 +558,7 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
   \cd{p}         & Pointeur (adresse) & \cd{n}    & Nombre de caractère écrits \\
   \cd{e}, \cd{E} & \multicolumn{3}{l}{Double en format exponentiel \texttt{[-]d.ddd e [+-]ddd}}\\
   \cd{g}, \cd{G} & \multicolumn{3}{l}{Double en format le plus adapté normal (\cd{f}, \cd{F}) ou exponentiel (\cd{e}, \cd{E})} \\
+  \cd{s} & \multicolumn{3}{l}{Chaîne de caractère (jusqu'à \cd{EOL} pour \cd{printf} ou un espace pour \cd{scanf})}
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{Xl}
