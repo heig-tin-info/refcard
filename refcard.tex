@@ -233,9 +233,9 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
 \section*{Constantes littérales}
 
 \begin{tabularx}{\linewidth}{
-  >{\hsize=0.5\hsize}X% 10% of 4\hsize
-  >{\hsize=1.1\hsize}X% 30% of 4\hsize
-  >{\hsize=0.9\hsize}X% 30% of 4\hsize
+  >{\hsize=0.4\hsize}X% 10% of 4\hsize
+  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+  >{\hsize=0.6\hsize}X% 30% of 4\hsize
   >{\hsize=1.5\hsize}X% 30% of 4\hsize
      % sum=4.0\hsize for 4 columns
   }
@@ -244,7 +244,9 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   \cd{0012}    & Octal & \cd{212}    & Décimale \\
   \cd{12.0f}   & Simple précision (\cd{float})& \cd{12.0}    & Double précision (\cd{double})\\ \hline
   \cd{123u}    & Entier non signé (\cd{unsigned}) & \cd{42l}     & Entier \cd{long} \\
-  \cd{4312ll}  & \cd{long long} & \cd{12e-3} ou \cd{12E-3} & Notation en E (\cd{double})
+  \cd{4312ll}  & Entier \cd{long long} & \cd{12e-3} & Notation en E (0.012) \\ \hline
+  \cd{'1'}     & Caractère \cd{char} (\cd{0x31}) & \cd{"abc"} & Chaîne de caractères (\cd{char*}) \\ \hline
+
 \end{tabularx}
 \subsubsection*{Suffixes (qualificatifs de type) :}
 \begin{tabularx}{\linewidth}{
