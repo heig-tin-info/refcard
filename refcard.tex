@@ -466,14 +466,24 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
 
 \begin{tabularx}{\linewidth}{
   >{\hsize=0.5\hsize}X% 10% of 4\hsize
-  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+  >{\hsize=0.9\hsize}X% 30% of 4\hsize
   >{\hsize=0.5\hsize}X% 30% of 4\hsize
-  >{\hsize=1.5\hsize}X% 30% of 4\hsize
+  >{\hsize=0.9\hsize}X% 30% of 4\hsize
+  >{\hsize=0.5\hsize}X% 30% of 4\hsize
+  >{\hsize=0.9\hsize}X% 30% of 4\hsize
   }
 
-  \cd{FILE* fp} & Pointeur de fichier & \cd{stdin} & Entrée standard \\
-  \cd{stdout}   & Sortie standard     & \cd{stderr} & Sortie erreur \\
-  \cd{EOF}      & Fin de fichier      & \cd{BUFSIZ} & Buffer size \\
+  \cd{FILE*}  & Pointeur sur flux &
+  \cd{EOF}    & Fin de fichier &
+  \cd{BUFSIZ} & Buffer size \\
+
+  \cd{stdin}  & Entrée standard &
+  \cd{stdout} & Sortie standard &
+  \cd{stderr} & Sortie erreur \\
+
+  \cd{SEEK_SET} & Début de fichier &
+  \cd{SEEK_CUR} & Curseur courant &
+  \cd{SEEK_END} & Fin de fichier \\
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{Xl}
@@ -495,8 +505,8 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   Lire une ligne & \cd{char *fgets(char* s, int n, FILE* fp)} \\
   Écrire une ligne & \cd{int fputs(char* s, FILE* fp)} \\
 
-  Écriture avec gabarit & \cd{int fprintf(FILE* fp, char* format, ...)} \\
-  Lecture avec gabarit & \cd{int fscanf(FILE* fp, char* format, ...)} \\
+  Écriture avec format & \cd{int fprintf(FILE* fp, char* format, ...)} \\
+  Lecture avec format & \cd{int fscanf(FILE* fp, char* format, ...)} \\
 
   Retourne \cd{0} si pas d'erreur & \cd{int ferror(FILE *fp)} \\
   Retourne \cd{!0} si fin de fichier & \cd{int feof(FILE *fp)} \\
