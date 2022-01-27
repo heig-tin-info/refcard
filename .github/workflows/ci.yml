@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - name: Build docker images
         run: docker build . -t local -f .devcontainer/Dockerfile        
       - name: Build
