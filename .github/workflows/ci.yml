@@ -15,6 +15,9 @@ jobs:
         run: docker build . -t local -f .devcontainer/Dockerfile        
       - name: Build
         run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update preview
       - name: Upload refcard
         uses: actions/upload-artifact@v2
         with:

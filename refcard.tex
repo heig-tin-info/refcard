@@ -11,11 +11,15 @@
 \usepackage{lmodern}
 \usepackage{stix}
 \usepackage{listings}
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{multirow}
 \usepackage{titlesec}
 
 \input{revision}
+
+\ifdefined\tinted
+  \pagecolor{Goldenrod!30}
+\fi
 
 \setlength{\parskip}{0.2em}
 \setlength{\parindent}{0em}
