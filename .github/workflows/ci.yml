@@ -11,15 +11,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
-        with:
-          submodules: true
+      - name: Build docker images
+        run: docker build . -t local -f .devcontainer/Dockerfile        
       - name: Build
-        run: make
+        run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make
       - name: Upload refcard
         uses: actions/upload-artifact@v2
         with:
           name: pdf
-          path: refcard.pdf
+          path: refcard-python.pdf
           if-no-files-found: error
   release:
     name: Create Release
