@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: pdf
-          path: refcard-python.pdf
+          path: refcard.pdf
           if-no-files-found: error
   release:
     name: Create Release
