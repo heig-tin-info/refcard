@@ -14,7 +14,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{multirow}
 \usepackage{titlesec}
-
+\usepackage{graphicx}
 \input{revision}
 
 \ifdefined\tinted
@@ -77,11 +77,13 @@
 
 \begin{multicols*}{3}
 
-\begin{center}
-  {\Large \bf Carte de référence C99/C11/C18} \\
-  HEIG-VD -- version \revision \ -- \revisiondate \\
-\end{center}
-
+\begin{tabularx}{\columnwidth}{lX}
+    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} &
+    \begin{center}
+      {\Large \bf Carte de référence C99/C11/C18} \\
+      HEIG-VD -- version \revision \ -- \revisiondate \\
+    \end{center}
+\end{tabularx}
 Cette carte de référence peut être utilisée durant les travaux écrits et examens
 des cours \emph{info1} et \emph{info2} à moins que le contraire soit explicitement formulé.
 Elle est une liste non exhaustive des possibilités du langage C.
@@ -244,7 +246,7 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
      % sum=4.0\hsize for 4 columns
   }
 
-  \cd{0xff}    & Hexadécimal (\texttt{int}) & \cd{0b110011}    & Binaire (non standard) \\
+  \cd{0xff}    & Hexadécimal (\texttt{int}) & \cd{0b01100110}    & Binaire\\
   \cd{0012}    & Octal & \cd{212}    & Décimale \\
   \cd{12.0f}   & Simple précision (\cd{float})& \cd{12.0}    & Double précision (\cd{double})\\ \hline
   \cd{123u}    & Entier non signé (\cd{unsigned}) & \cd{42l}     & Entier \cd{long} \\
@@ -362,6 +364,7 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
   Pour & \cd{for (expr; expr; expr) \{}~\any\cd{\}} \\
   Jusqu'à ce que & \cd{do \{}~\any\cd{\} while (expr);} \\
   Choix multiples & \cd{switch(expr) \{ case a: instr; break; case b: instr; \}} \\
+  Vider le buffer & \cd{while ((c = getchar()) != '\\n' && c != EOF) \{ \}} \\
   \end{tabularx}
 
 \section*{Bibliothèques Standards}
@@ -373,7 +376,7 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
     \cd{<time.h>}   &              &            &             & \\
   \end{tabularx}
 
-\section*{Mots clés du langage (C11)}
+\section*{Mots clés du langage}
   \begin{tabularx}{\linewidth}{XXXXXXXX}
     \cd{auto} &
     \cd{break} &
