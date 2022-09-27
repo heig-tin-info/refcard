@@ -14,10 +14,12 @@ jobs:
         with:
           ref: master
           fetch-depth: 0 # To get all tags
+      - name: work around permission issue
+        run: git config --global --add safe.directory /srv
+      - name: Create revision
+        run: make revision.tex
       - name: Build docker images
         run: docker build . -t local -f .devcontainer/Dockerfile
-      - name: Create revision
-        run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make revision.tex
       - name: Build
         run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make
       - uses: stefanzweifel/git-auto-commit-action@v4
