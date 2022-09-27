@@ -15,9 +15,9 @@ jobs:
           ref: master
           fetch-depth: 0 # To get all tags
       - name: Build docker images
-        run: docker build . -t local -f .devcontainer/Dockerfile        
+        run: docker build . -t local -f .devcontainer/Dockerfile
       - name: Create revision
-        run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make revision.tex        
+        run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make revision.tex
       - name: Build
         run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make
       - uses: stefanzweifel/git-auto-commit-action@v4
