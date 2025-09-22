@@ -122,7 +122,7 @@ Signification des termes utilisés dans cette carte de référence.
   Inclure bibliothèque globale       & \cd{\#include <filename>} \\
   Inclure bibliothèque locale        & \cd{\#include "filename"} \\
   Remplacer un texte                 & \cd{\#define NAME expr} \\
-  Macro                              & \cd{\#define NAME(expr, ...) expr} \\
+  Macro                              & \cd{\#define NAME(param1, ...) expression} \\
   ...exemple                         & \cd{\#define MAX(A,B) ((A)>(B) ? (A) : (B))} \\
   Supprimer une définition           & \cd{\#undef NAME} \\
   Conversion en chaîne de caractères & \cd{\#} \\
@@ -133,7 +133,9 @@ Signification des termes utilisés dans cette carte de référence.
   Directive pour le compilateur      & \cd{\#pragma}\tt\spc \any \\
   Génère une erreur de compilation   & \cd{\#error}\tt\spc \any \\
   Est-ce que \cd{NAME} est défini ?  & \cd{defined(NAME)} \\
-  Saut de ligne virtuel              & \cd{\\}
+  Saut de ligne virtuel              & \cd{\\} \\
+  Commentaire C99                    & \cd{// commentaire jusqu'à la fin de ligne} \\
+  Commentaire traditionnel           & \cd{/* commentaire multi-ligne */} \\
 \end{tabularx}
 
 \section*{Types de données}
@@ -154,17 +156,17 @@ Signification des termes utilisés dans cette carte de référence.
 \begin{tabularx}{\linewidth}{X|l|l|l}
   \bf Description & \bf Type standard & \bf \texttt{<stdint.h>} & \bf Profondeur \\
   \hline
-  Caractère                   & \cd{char}      & \cd {int8_t} & 8 bits \\
+  Caractère                   & \cd{char}      & (peut être signé ou non) & 8 bits \\
   \hline
   Entier                      & \cd{int}, \cd{signed}  & \cd {int_least16_t} & $\geq$ 16 bits \\
   Entier court                & \cd{short}     & \cd {int16_t} & $\geq$ 16 bits \\
   Entier long                 & \cd{long}      & \cd {int32_t} & $\geq$ 32 bits \\
   Entier très long            & \cd{long long} & \cd {int64_t} & $\geq$ 64 bits \\
-  Entier très long (positif)  & \cd{unsigned long long} & \cd {int64_t} & $\geq$ 64 bits \\
+  Entier très long (positif)  & \cd{unsigned long long} & \cd {uint64_t} & $\geq$ 64 bits \\
   Entier non signé (positif)  & \cd{unsigned int}, \cd{unsigned} & \cd{uint_least16_t} & $\geq$ 16-bits \\
   \hline
   Simple précision            & \cd{float}     &  & $\geq$ 32 bits \\
-  Double précision            & \cd{double}    &  & $\geq$ 32 bits \\
+  Double précision            & \cd{double}    &  & $\geq$ 64 bits \\
   %Quadruple précision         & \cd{long double}    &  & $\geq$ 32 bits \\
 \end{tabularx}
 
@@ -213,8 +215,10 @@ Avec \cd{<stdint.h>}, les types suivants sont disponibles, où \cd{N} est rempla
   Variable & \cd{type name = value;} \\
   Tableau & \cd{type name[] = \{value, ...\}}; \\
   Chaîne de caractère & \cd{type name[] = "...";} \\
-  Stucture & \cd{type name = \{.key=value, ...\};} \\
+  Structure & \cd{type name = \{.key=value, ...\};} \\
   À zéro & \cd{type name = \{0\};} \\
+  Tableau de taille variable (VLA C99) & \cd{int array[n];} (où \cd{n} est une variable) \\
+  Initialiseurs désignés (C99) & \cd{int arr[10] = \{[5] = 42, [9] = 1\};} \\
 \end{tabularx}
 
 \section*{Caractères non imprimables et échappements}
@@ -460,6 +464,10 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
   Recherche premier \texttt{c} dans \texttt{str} & \cd{char *strchr(char *str, int c)} \\
   Recherche dernier \texttt{c} dans \texttt{str} & \cd{char *strrchr(char *str, int c)} \\
   Recherche de sous chaîne & \cd{char *strstr(char *haystack, char *needle)} \\
+  Tokenisation de chaîne & \cd{char *strtok(char *str, char *delim)} \\
+  Longueur du segment initial & \cd{size_t strspn(char *s1, char *s2)} \\
+  Longueur du segment complémentaire & \cd{size_t strcspn(char *s1, char *s2)} \\
+  Recherche caractères multiples & \cd{char *strpbrk(char *s1, char *s2)} \\
   \hline
   Copie \texttt{n} char de \texttt{s2} dans \texttt{s1} & \cd{void *memcpy(void* s1, void* s2, size_t n)} \\
   Copie \texttt{n} char de \texttt{s2} dans \texttt{s1} $\dagger$ & \cd{void *memmove(void* s1, void* s2, size_t n)} \\
@@ -468,7 +476,7 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
   Compare \texttt{n} char de \texttt{s2} avec \texttt{s1} & \cd{int memcmp(void *s1, void *s2, size_t n)} \\
 \end{tabularx}
 
-$\dagger$ Permet le chauvauchement des domaines mémoire de source et de destination.
+$\dagger$ Permet le chevauchement des domaines mémoire de source et de destination.
 
 \section*{Entrée/Sortie \texttt{<stdio.h>}}
 
@@ -502,6 +510,8 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
   Lecture dans la chaîne \texttt{s} & \cd{int sscanf(char* s, char* format, ...)} \\
   Affiche la chaîne \texttt{s} & \cd{int puts(char *s)} \\
   Écrire dans la chaîne \texttt{s} & \cd{int sprintf(char* s, char* format, ...)}  \\
+  Écriture sécurisée (C99) & \cd{int snprintf(char* s, size_t n, char* format, ...)} \\
+  Vidage du buffer & \cd{int fflush(FILE *fp)} \\
   Ouvre un fichier & \cd{FILE *fopen(char* filename, char* mode)} \\
   Ferme un fichier & \cd{int fclose(FILE *fp)} \\
   Lire un caractère & \cd{int fgetc(FILE *fp)} \\
@@ -518,6 +528,8 @@ $\dagger$ Permet le chauvauchement des domaines mémoire de source et de destina
 
   Retourne \cd{0} si pas d'erreur & \cd{int ferror(FILE *fp)} \\
   Retourne \cd{!0} si fin de fichier & \cd{int feof(FILE *fp)} \\
+  Affiche le message d'erreur & \cd{void perror(char *s)} \\
+  Variable globale d'erreur & \cd{extern int errno} (\texttt{<errno.h>}) \\
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{Xl}
@@ -620,6 +632,8 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
   \multicolumn{2}{l}{\bf Conversion de chaînes de caractères en nombre} \\
   \cd{f}, \cd{i}, \cd{l}, \cd{ll} & \cd{type ato}\texttt{\spc}\cd{ (char* str);} \\
   \cd{f}, \cd{l}, \cd{d}, \cd{ld}, \cd{ll}, \cd{ul}, \cd{ull} & \cd{type strto}\texttt{\spc}\cd{ (char* str, char** endptr);} \\
+  Conversion avec vérification d'erreur & \cd{long strtol(char *nptr, char **endptr, int base)} \\
+  Conversion unsigned & \cd{unsigned long strtoul(char *nptr, char **endptr, int base)} \\
 
   \multicolumn{2}{l}{\bf Arithmétique d'entiers} \rule{0pt}{3ex}\\
   Valeur absolue & \cd{int abs (int n);} \\
@@ -644,6 +658,8 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
   Alloue un bloc mémoire & \cd{void* malloc (size_t size);} \\
   Réalloue un bloc mémoire & \cd{void* realloc (void* ptr, size_t size);} \\
   Désalloue un bloc mémoire & \cd{void free (void* ptr);} \\
+  \multicolumn{2}{l}{\footnotesize Toujours vérifier si \cd{malloc/calloc/realloc != NULL}} \\
+  \multicolumn{2}{l}{\footnotesize Toujours \cd{free()} et remettre le pointeur à \cd{NULL}} \\
 \end{tabularx}
 \begin{tabularx}{\linewidth}{Xl}
   \multicolumn{2}{l}{\bf Tri et recherche} \rule{0pt}{3ex} \\
@@ -716,9 +732,16 @@ Si non spécifé, le prototype est la forme \cd{double func(double x)}.
 \cd{bool}, \cd{true} (vrai (1)), \cd{false} (faux (0)) \\
 \cd{assert(0 == !1 && !1 == 0 && !!12345 == 1)}
 
+\section*{Assertions et tests}
+\begin{tabularx}{\linewidth}{Xl}
+  Assertion runtime (\texttt{<assert.h>}) & \cd{assert(condition);} \\
+  Assertion compile-time (C11) & \cd{\_Static\_assert(condition, "message");} \\
+  Désactiver assertions & \cd{\#define NDEBUG} (avant \cd{\#include <assert.h>}) \\
+\end{tabularx}
+
 \section*{Limites \texttt{<limits.h>} / \texttt{<float.h>}}
 
-Valeurs typiques pour un modèle de donnée \textbf{LP32}.
+Valeurs typiques pour un modèle de donnée \textbf{ILP32}.
 
 \begin{tabularx}{\linewidth}{
   >{\hsize=0.9\hsize}X% 10% of 4\hsize
@@ -741,14 +764,16 @@ Valeurs typiques pour un modèle de donnée \textbf{LP32}.
   \cd{FLT_EPSILON} & \cd{1.1e-7} & \cd{DBL_EPSILON} & \cd{2.2e-16}
 \end{tabularx}
 
-% \section*{Compilation (gcc/clang)}
-% \begin{tabularx}{\linewidth}{Xl}
-%   \texttt{-O2 -std=c99 -Wall -Wextra -Wconversion} & Options standards \\
-%   \texttt{-g} & Débug \\
-%   \texttt{cc filename.c} & Compilation simple \\
-%   \texttt{cc -o name filename.c} & Compilation simple, \\
-%   & choix du nom de l'exécutable \\
-% \end{tabularx}
+\section*{Compilation (gcc/clang)}
+\begin{tabularx}{\linewidth}{Xl}
+  Options standards & \texttt{-std=c99 -Wall -Wextra -O2} \\
+  Mode débogage & \texttt{-g} \\
+  Compilation simple & \texttt{gcc filename.c -o executable} \\
+  Définir une macro & \texttt{-DMACRO=value} \\
+  Inclure un répertoire & \texttt{-I./include} \\
+  Lier une bibliothèque & \texttt{-lmath} (pour \texttt{libmath}) \\
+  Standards supportés & \texttt{-std=c89}, \texttt{-std=c99}, \texttt{-std=c11}, \texttt{-std=c18} \\
+\end{tabularx}
 
 \end{multicols*}
 \end{document}
