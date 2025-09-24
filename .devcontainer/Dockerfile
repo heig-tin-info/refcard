@@ -27,7 +27,7 @@ RUN mkdir "/tmp/texlive" && cd "/tmp/texlive" && \
 ENV PATH="${PATH}:${TL_PREFIX}/bin/x86_64-linuxmusl"
 
 RUN tlmgr install latexmk fontspec minted babel-french adjustbox capt-of \
-    csquotes datatool emptypage enumitem environ epigraph gensymb \
+    csquotes datatool emptypage enumitem environ gensymb \
     imakeidx listofitems stackengine tcolorbox titlesec \
     tocloft wasysym booktabs caption euenc filehook lm makecmds microtype \
     parskip ulem unicode-math lualatex-math tikzfill units pdfcol nextpage \
@@ -47,10 +47,10 @@ RUN chmod -R 777 /tmp/texmf-cache
 RUN apk add --no-cache make ghostscript fontconfig ttf-freefont ncurses clisp qpdf
 RUN apk add --no-cache python3 py3-pip py3-pygments py3-yaml py3-pikepdf py3-gitpython py3-jinja2 py3-babel
 
-RUN tlmgr install exam amsmath xfrac siunitx qrcode tabulary realboxes inconsolata \
-    mdframed zref needspace listings ragged2e bashful underscore luacode pgfplots polyglossia
-RUN apk add --no-cache gcc build-base qpdf ttf-dejavu
+RUN tlmgr install exam amsmath xfrac siunitx realboxes inconsolata \
+    mdframed zref needspace listings ragged2e bashful underscore luacode pgfplots
+RUN apk add --no-cache qpdf ttf-dejavu
 
 RUN git config --global --add safe.directory /srv%
 
-RUN tlmgr install extsizes fontawesome menukeys relsize koma-script sectsty
+RUN tlmgr install extsizes fontawesome menukeys relsize koma-script sectsty stix multirow
