@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage[a4paper, landscape, margin=1cm]{geometry}
+\usepackage[a4paper, landscape, margin=0.5cm]{geometry}
 \usepackage{fontspec}
 \usepackage[french]{babel}
 \usepackage[fontsize=6.5pt]{scrextend}
@@ -80,17 +80,13 @@
 \begin{tabularx}{\columnwidth}{lX}
     \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} &
     \begin{center}
-      {\Large \bf Carte de référence C99/C11/C18} \\
+      {\Large \bf Carte de référence C99..C20} \\
       HEIG-VD -- version \revision \ -- \revisiondate \\
     \end{center}
 \end{tabularx}
 Cette carte de référence peut être utilisée durant les travaux écrits et examens
 des cours \emph{info1} et \emph{info2} à moins que le contraire soit explicitement formulé.
-Elle est une liste non exhaustive des possibilités du langage C.
-
-Les prototypes de fonction ont été volontairement simplifiés pour une meilleure lisibilité.
-
-Signification des termes utilisés dans cette carte de référence.
+Elle est une liste non exhaustive des possibilités du langage C. Les prototypes de fonction ont été volontairement simplifiés pour une meilleure lisibilité. Signification des termes utilisés dans cette carte de référence :
 
 \begin{tabularx}{\linewidth}{
   >{\hsize=0.5\hsize}X% 10% of 4\hsize
@@ -134,8 +130,8 @@ Signification des termes utilisés dans cette carte de référence.
   Génère une erreur de compilation   & \cd{\#error}\tt\spc \any \\
   Est-ce que \cd{NAME} est défini ?  & \cd{defined(NAME)} \\
   Saut de ligne virtuel              & \cd{\\} \\
-  Commentaire C99                    & \cd{// commentaire jusqu'à la fin de ligne} \\
-  Commentaire traditionnel           & \cd{/* commentaire multi-ligne */} \\
+  Commentaire sur une ligne          & \cd{// comment} \\
+  Commentaire multi-lignes           & \cd{/* comment */} \\
 \end{tabularx}
 
 \section*{Types de données}
@@ -156,7 +152,7 @@ Signification des termes utilisés dans cette carte de référence.
 \begin{tabularx}{\linewidth}{X|l|l|l}
   \bf Description & \bf Type standard & \bf \texttt{<stdint.h>} & \bf Profondeur \\
   \hline
-  Caractère                   & \cd{char}      & (peut être signé ou non) & 8 bits \\
+  Caractère                   & \cd{char}      & (signed or not) & 8 bits \\
   \hline
   Entier                      & \cd{int}, \cd{signed}  & \cd {int_least16_t} & $\geq$ 16 bits \\
   Entier court                & \cd{short}     & \cd {int16_t} & $\geq$ 16 bits \\
@@ -465,8 +461,8 @@ $\ddagger$ Opérateur est pris en compte selon priorité, mais action décalée 
   Recherche dernier \texttt{c} dans \texttt{str} & \cd{char *strrchr(char *str, int c)} \\
   Recherche de sous chaîne & \cd{char *strstr(char *haystack, char *needle)} \\
   Tokenisation de chaîne & \cd{char *strtok(char *str, char *delim)} \\
-  Longueur du segment initial & \cd{size_t strspn(char *s1, char *s2)} \\
-  Longueur du segment complémentaire & \cd{size_t strcspn(char *s1, char *s2)} \\
+%   Longueur du segment initial & \cd{size_t strspn(char *s1, char *s2)} \\
+%   Longueur du segment complémentaire & \cd{size_t strcspn(char *s1, char *s2)} \\
   Recherche caractères multiples & \cd{char *strpbrk(char *s1, char *s2)} \\
   \hline
   Copie \texttt{n} char de \texttt{s2} dans \texttt{s1} & \cd{void *memcpy(void* s1, void* s2, size_t n)} \\
@@ -632,8 +628,8 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
   \multicolumn{2}{l}{\bf Conversion de chaînes de caractères en nombre} \\
   \cd{f}, \cd{i}, \cd{l}, \cd{ll} & \cd{type ato}\texttt{\spc}\cd{ (char* str);} \\
   \cd{f}, \cd{l}, \cd{d}, \cd{ld}, \cd{ll}, \cd{ul}, \cd{ull} & \cd{type strto}\texttt{\spc}\cd{ (char* str, char** endptr);} \\
-  Conversion avec vérification d'erreur & \cd{long strtol(char *nptr, char **endptr, int base)} \\
-  Conversion unsigned & \cd{unsigned long strtoul(char *nptr, char **endptr, int base)} \\
+%   Conversion avec vérification d'erreur & \cd{long strtol(char *nptr, char **endptr, int base)} \\
+%   Conversion unsigned & \cd{unsigned long strtoul(char *nptr, char **endptr, int base)} \\
 
   \multicolumn{2}{l}{\bf Arithmétique d'entiers} \rule{0pt}{3ex}\\
   Valeur absolue & \cd{int abs (int n);} \\
@@ -693,15 +689,11 @@ Format pour \texttt{scanf}: \texttt{\%[*][width][length]type} \\
 \small
 \begin{lstlisting}
 struct tm {
-  int tm_sec;   // Secondes (0..59)
-  int tm_min;   // Minutes (0..59)
-  int tm_hour;  // Heures (0..23)
-  int tm_mday;  // Jour du mois (1..31)
-  int tm_mon;   // Mois (0..11)
-  int tm_year;  // Nombre d'années depuis 1900
-  int tm_wday;  // Jour depuis dimanche (0..6)
-  int tm_yday;  // Jour dans l'année de (0..365)
-  int tm_isdst; // Heure été ? (Daylight Saving Time)
+  int tm_sec;   int tm_min;  // Secondes (0..59), Minutes (0..59)
+  int tm_hour;  int tm_mday; // Heures (0..23), Jour (1..31)
+  int tm_mon;   int tm_year; // Mois (0..11), Années depuis 1900
+  int tm_wday;  int tm_yday; // Jour depuis dim. (0..6), Jour (0..365)
+  int tm_isdst;              // Heure été ? (Daylight Saving Time)
 };
 \end{lstlisting}
 }
@@ -764,16 +756,16 @@ Valeurs typiques pour un modèle de donnée \textbf{ILP32}.
   \cd{FLT_EPSILON} & \cd{1.1e-7} & \cd{DBL_EPSILON} & \cd{2.2e-16}
 \end{tabularx}
 
-\section*{Compilation (gcc/clang)}
-\begin{tabularx}{\linewidth}{Xl}
-  Options standards & \texttt{-std=c99 -Wall -Wextra -O2} \\
-  Mode débogage & \texttt{-g} \\
-  Compilation simple & \texttt{gcc filename.c -o executable} \\
-  Définir une macro & \texttt{-DMACRO=value} \\
-  Inclure un répertoire & \texttt{-I./include} \\
-  Lier une bibliothèque & \texttt{-lmath} (pour \texttt{libmath}) \\
-  Standards supportés & \texttt{-std=c89}, \texttt{-std=c99}, \texttt{-std=c11}, \texttt{-std=c18} \\
-\end{tabularx}
+% \section*{Compilation (gcc/clang)}
+% \begin{tabularx}{\linewidth}{Xl}
+%   Options standards & \texttt{-std=c99 -Wall -Wextra -O2} \\
+%   Mode débogage & \texttt{-g} \\
+%   Compilation simple & \texttt{gcc filename.c -o executable} \\
+%   Définir une macro & \texttt{-DMACRO=value} \\
+%   Inclure un répertoire & \texttt{-I./include} \\
+%   Lier une bibliothèque & \texttt{-lmath} (pour \texttt{libmath}) \\
+%   Standards supportés & \texttt{-std=c89}, \texttt{-std=c99}, \texttt{-std=c11}, \texttt{-std=c18} \\
+% \end{tabularx}
 
 \end{multicols*}
 \end{document}
