@@ -77,8 +77,8 @@
 
 \begin{multicols*}{3}
 
-\begin{tabularx}{\columnwidth}{lX}
-    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} &
+\begin{tabularx}{\columnwidth}{llX}
+    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} & \raisebox{-\totalheight}{\includegraphics[width=0.7cm]{assets/c-lang.pdf}} &
     \begin{center}
       {\Large \bf Carte de référence C99..C20} \\
       HEIG-VD -- version \revision \ -- \revisiondate \\
@@ -736,27 +736,30 @@ Si non spécifé, le prototype est la forme \cd{double func(double x)}.
 Valeurs typiques pour un modèle de donnée \textbf{ILP32}.
 
 \begin{tabularx}{\linewidth}{
-  >{\hsize=0.9\hsize}X% 10% of 4\hsize
-  >{\hsize=1.2\hsize}X% 30% of 4\hsize
-  >{\hsize=0.9\hsize}X% 30% of 4\hsize
-  >{\hsize=1.2\hsize}X% 30% of 4\hsize
+  >{\hsize=0.3\hsize}X% 10% of 4\hsize
+  >{\hsize=0.4\hsize}X|% 30% of 4\hsize
+  >{\hsize=0.3\hsize}X% 30% of 4\hsize
+  >{\hsize=0.4\hsize}X|% 30% of 4\hsize
+  >{\hsize=0.3\hsize}X% 30% of 4\hsize
+  >{\hsize=0.4\hsize}X% 30% of 4\hsize
      % sum=4.0\hsize for 4 columns
   }
-  \cd{CHAR_BIT}  & (8) &   & \\
-  \cd{SCHAR_MAX} & +127 & \cd{SCHAR_MIN} & -128 \\
-  \cd{CHAR_MAX} & \cd{SCHAR_MAX} & \cd{CHAR_MIN} & \cd{SCHAR_MIN} \\
-  \cd{SHRT_MAX} & +32'767 & \cd{SHRT_MIN} & -32'768 \\
-  \cd{INT_MAX} & +2'147'483'647 & \cd{INT_MIN} & -2'147'483'648 \\
-  \cd{LONG_MAX} & +2'147'483'647 & \cd{LONG_MIN} & -2'147'483'648 \\
-  \cd{LLONG_MAX} & +2e63 - 1 & \cd{LLONG_MIN} & -2e63 \\
-  \cd{UCHAR_MAX} & +255 & \cd{UINT_MAX} & +4'294'967'295 \\
-  \cd{ULONG_MAX} & +4'294'967'295 & \cd{ULLONG_MAX} & +2e64 - 1 \\
-  \cd{FLT_MAX} & \cd{3.4e38} & \cd{FLT_MIN} & \cd{1.2e-38} \\
-  \cd{DBL_MAX} & \cd{1.8e308} & \cd{DBL_MIN} & \cd{2.2e-308} \\
-  \cd{FLT_EPSILON} & \cd{1.1e-7} & \cd{DBL_EPSILON} & \cd{2.2e-16}
+  \cd{CHAR_BIT}  & (8) & \cd{SCHAR_MAX} & +127 & \cd{SCHAR_MIN} & -128 \\
+  \cd{CHAR_MAX} & \cd{SCHAR_MAX} & \cd{CHAR_MIN} & \cd{SCHAR_MIN} & \cd{SHRT_MAX} & +32'767 \\
+  \cd{SHRT_MIN} & -32'768 & \cd{INT_MAX} & +2'147'483'647 & \cd{INT_MIN} & -2'147'483'648 \\
+  \cd{LONG_MAX} & +2'147'483'647 & \cd{LONG_MIN} & -2'147'483'648 & \cd{LLONG_MAX} & +2e63 - 1 \\
+  \cd{LLONG_MIN} & -2e63 & \cd{UCHAR_MAX} & +255 & \cd{UINT_MAX} & +4'294'967'295 \\
+  \cd{ULONG_MAX} & +4'294'967'295 & \cd{ULLONG_MAX} & +2e64 - 1 & \cd{FLT_MAX} & \cd{3.4e38} \\
+  \cd{FLT_MIN} & \cd{1.2e-38} & \cd{DBL_MAX} & \cd{1.8e308} & \cd{DBL_MIN} & \cd{2.2e-308} \\
+  \cd{FLT_EPSILON} & \cd{1.1e-7} & \cd{DBL_EPSILON} & \cd{2.2e-16} & &
 \end{tabularx}
 
-% \section*{Compilation (gcc/clang)}
+\section*{Compilation (gcc/clang)}
+
+\begin{lstlisting}
+gcc -std=c17 -Wall -Wextra -O3 -g -o [exec] [file].c -I./include
+    -DMACRO=value -lm -pthread -Wpedantic
+\end{lstlisting}
 % \begin{tabularx}{\linewidth}{Xl}
 %   Options standards & \texttt{-std=c99 -Wall -Wextra -O2} \\
 %   Mode débogage & \texttt{-g} \\
