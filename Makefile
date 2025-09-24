@@ -15,10 +15,10 @@ underlay.pdf: underlay.tex
 	latexmk $<
 
 preview.pdf: $(SRC)
-	latexmk -jobname=$(basename $@) -pdflatex='xelatex %O "\def\tinted{tinted}\input{%S}"' $<
+	latexmk -jobname=$(basename $@) -pdflatex='lualatex %O "\def\tinted{tinted}\input{%S}"' $<
 
 %.png: %.pdf
-	gs -dSAFER -r150 -sDEVICE=pngalpha -dLastPage=1 -o $@ $<
+	gs -dSAFER -r150 -sDEVICE=png16m -dLastPage=1 -o $@ $<
 
 clean:
 	latexmk -C
