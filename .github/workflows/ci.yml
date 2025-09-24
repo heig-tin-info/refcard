@@ -3,8 +3,9 @@ name: CI
 on:
   push:
     branches: [ master, main ]
-  create:
-    tags:
+    tags: [ 'v*' ]   # <— au lieu de on.create
+#  create:
+#    tags:          # ❌ supprime ça
 
 jobs:
   build:
@@ -12,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0   # on veut les tags
 
       - name: work around permission issue
         run: git config --global --add safe.directory /srv
@@ -25,9 +26,7 @@ jobs:
 
       - name: Build
         run: docker run -v "$GITHUB_WORKSPACE":/srv -w /srv local make
-        # À ce stade tu dois avoir: refcard.pdf et preview.png
 
-      # Artifacts CI (éphémères) — pratiques pour que le job release les récupère
       - name: Upload refcard.pdf
         uses: actions/upload-artifact@v4
         with:
@@ -49,7 +48,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Récupère les artifacts produits par 'build'
       - name: Download refcard
         uses: actions/download-artifact@v4
         with:
@@ -62,7 +60,6 @@ jobs:
           name: preview
           path: dist
 
-      # Publie les 2 fichiers comme assets de la release (tag courant)
       - name: Create/Update Release with assets
         uses: softprops/action-gh-release@v2
         with:
