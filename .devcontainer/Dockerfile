@@ -53,4 +53,4 @@ RUN apk add --no-cache gcc build-base qpdf ttf-dejavu
 
 RUN git config --global --add safe.directory /srv%
 
-RUN tlmgr install extsizes fontawesome menukeys relsize
+RUN tlmgr install extsizes fontawesome menukeys relsize scrextend
