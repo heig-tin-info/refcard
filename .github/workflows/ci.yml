@@ -1,14 +1,10 @@
-name: CI
-
 on:
   push:
-    branches: [ master, main ]
+    branches:
+      - master
+      - main
   create:
     tags:
-
-permissions:
-  contents: write  # nécessaire pour pousser des commits
-
 jobs:
   build:
     name: Build Project
@@ -17,75 +13,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # pour récupérer les tags
+          ref: ${{ github.ref }}
+          fetch-depth: 0 # To get all tags
       - name: work around permission issue
         run: git config --global --add safe.directory /srv
-
       - name: Create revision
         run: make revision.tex
-
       - name: Build docker images
         run: docker build . -t local -f .devcontainer/Dockerfile
-
       - name: Build
-        run: docker run -v "$GITHUB_WORKSPACE":/srv -w /srv local make
-
-      - name: Auto-commit preview
-        if: startsWith(github.ref, 'refs/heads/')
-        uses: stefanzweifel/git-auto-commit-action@v4
+        run: docker run -v $GITHUB_WORKSPACE:/srv -w/srv local make
+      - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update preview
-          branch: ${{ github.ref_name }}
-          file_pattern: preview.png
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-
       - name: Upload refcard
         uses: actions/upload-artifact@v4
         with:
           name: pdf
           path: refcard.pdf
           if-no-files-found: error
-
   release:
     name: Create Release
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags')
+    permissions:
+      contents: write
     steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: pdf
           path: dist
-<<<<<<< HEAD
       - name: Create Release
         uses: softprops/action-gh-release@v2
-||||||| parent of 903aa73 (Fix ci)
-      - name: Upload Refcard
-        id: upload-pdf-refcard
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-=======
-
-      - name: Upload Refcard
-        id: upload-pdf-refcard
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
->>>>>>> 903aa73 (Fix ci)
         with:
           files: dist/refcard.pdf
           generate_release_notes: true
