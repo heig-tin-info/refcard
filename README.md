@@ -1,6 +1,6 @@
 # Carte de référence pour étudiants
 
-![.github/workflows/ci.yml](https://github.com/heig-tin-info/refcard/workflows/.github/workflows/ci.yml/badge.svg)
+![CI](https://github.com/heig-tin-info/refcard/actions/workflows/ci.yml/badge.svg?branch=main)
 
 Cette carte de référence est destinée à accompagner l'étudiant durant ses études d'ingénieur. Elle est en principe autorisée durant les travaux écrits et examens ; à confirmer par le professeur en charge de dispenser la matière.
 
