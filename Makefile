@@ -2,7 +2,7 @@ SRC=refcard.tex
 
 all: $(SRC:.tex=.pdf) preview.png
 
-%.pdf: %.tex | revision.tex
+%.pdf: %.tex | revision.tex heiglogo.sty
 	latexmk $<
 
 heiglogo.sty:
