@@ -31,13 +31,19 @@ RUN apk add --no-cache make ghostscript fontconfig ttf-freefont ncurses clisp qp
 
 RUN tlmgr install latex-bin latexmk luaotfload fontspec texliveonfly fontspec tex-gyre
 
-RUN mkdir -p /tmp/texmf-cache
-ENV TEXMFCACHE=/tmp/texmf-cache
 ENV TERM=xterm
+ARG TEX_CACHE_DIR=/var/cache/texlive
+RUN mkdir -p "${TEX_CACHE_DIR}"
+ENV TEXMFCACHE="${TEX_CACHE_DIR}" \
+    TEXMFVAR="${TEX_CACHE_DIR}" \
+    XDG_CACHE_HOME="${TEX_CACHE_DIR}" \
+    LUAOTFLOAD_CACHE="${TEX_CACHE_DIR}" \
+    HOME=/root
 
 RUN fc-cache -fv
 RUN updmap-sys
 RUN luaotfload-tool -u -v
-RUN chmod -R 777 /tmp/texmf-cache
+RUN chmod -R 777 "${TEX_CACHE_DIR}"
+RUN luaotfload-tool --update || true
 
-RUN git config --global --add safe.directory /srv%
+RUN git config --global --add safe.directory /srv
