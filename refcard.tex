@@ -1,36 +1,52 @@
 \documentclass{article}
 
 \usepackage[a4paper, landscape, margin=0.5cm]{geometry}
-\usepackage{fontspec}
 \usepackage[french]{babel}
-\usepackage[fontsize=6.5pt]{scrextend}
-\usepackage[T1]{fontenc}
-\usepackage{multicol}
 \usepackage{tabularx}
-\usepackage{sectsty}
-\usepackage{lmodern}
-\usepackage{stix}
-\usepackage{listings}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{multirow}
-\usepackage{titlesec}
-\usepackage{graphicx}
-\input{revision}
 
+
+\usepackage{heiglogo}
+
+% Fonts
+\usepackage{fontspec}
+\setmainfont{Latin Modern Sans}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\setmainfont{STIX Two Text}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{unicode-math}
+\setmathfont{STIX Two Math}
+
+\usepackage{newunicodechar}
+\newunicodechar{〰}{\texttildelow\texttildelow}
+
+% Colors and graphics
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+
+% Page Layout
+\usepackage[fontsize=6.5pt]{scrextend}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{titlesec}
 \ifdefined\tinted
   \pagecolor{Goldenrod!30}
 \fi
+\pagenumbering{gobble} % No page number
 
-\setlength{\parskip}{0.2em}
-\setlength{\parindent}{0em}
+% Git revision
+\input{revision}
 
 % Highlight configuration for C programming language
+\usepackage{listings}
 \lstset{
   language=c,
   breaklines=true,
   keywordstyle=\bfseries\color{black},
-  basicstyle=\ttfamily\color{black},
-  emphstyle={\em \color{gray}},
+  basicstyle=\ttfamily\fontsize{6.5pt}{7.5pt}\selectfont,
+  columns=fullflexible,
+  emphstyle={\em \color{black}},
   emph={expr, type, NAME, ptr, name, expr, value, filename, label, member, type},
   mathescape=true,
   keepspaces=true,
@@ -41,26 +57,28 @@
   escapeinside={(*}{*)}
 }
 
-% Configuration
-\renewcommand{\familydefault}{\sfdefault}
+% Titles formatting (sans serif, no numbering)
+\titleformat{\section}
+  {\sffamily\bfseries\fontsize{12}{15}\selectfont}
+  {}{0pt}{}
 
-\sectionfont{\fontsize{12}{15}\selectfont}
-\subsectionfont{\fontsize{10}{12}\selectfont}
-\subsubsectionfont{\fontsize{7}{9}\selectfont}
+\titleformat{\subsection}
+  {\sffamily\bfseries\fontsize{9}{11}\selectfont}
+  {}{0pt}{}
 
-\allsectionsfont{\sffamily\underline}
+\titleformat{\subsubsection}
+  {\sffamily\bfseries\fontsize{8}{10}\selectfont}
+  {}{0pt}{}
 
-% No pages numbering
-\pagenumbering{gobble}
+% Spacing around titles
+\titlespacing*{\section}{0pt}{0ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
+\titlespacing*{\subsection}{0pt}{0.1ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
+\titlespacing*{\subsubsection}{0pt}{0.1ex plus .1ex minus 0.5ex}{0.5ex plus .1ex minus 0.2ex}
 
-% Titles and paragraphs more compact
-\titlespacing*{\section}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-\titlespacing*{\subsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-\titlespacing*{\subsubsection}{0pt}{0.5ex plus .1ex minus 0.1ex}{0.5ex plus .1ex minus 0.1ex}
-
-\newlength\mybaselinestretch
-\mybaselinestretch=0pt plus 0.02pt\relax
-\addtolength{\baselineskip}{\mybaselinestretch}
+% Paragraph layout
+\setlength{\parskip}{0.2em}
+\setlength{\parindent}{0em}
+\linespread{0.98}
 
 \setlength\parindent{0pt}
 \setlength\tabcolsep{1.5pt}
@@ -69,16 +87,18 @@
 % Macros
 \newcommand{\tab}{\hspace{2em}}
 \newcommand{\etc}{\small \ldots}
-\newcommand{\any}{$\hzigzag$~}
+\newcommand{\any}{$\hzigzag$}
 \newcommand{\spc}{$\mathvisiblespace$}
 \newcommand{\cd}{\lstinline}
 
 \begin{document}
 
 \begin{multicols*}{3}
+\emergencystretch=1em
+\raggedright
 
 \begin{tabularx}{\columnwidth}{llX}
-    \raisebox{-\totalheight}{\includegraphics[width=1cm]{assets/heig-vd-black.pdf}} & \raisebox{-\totalheight}{\includegraphics[width=0.7cm]{assets/c-lang.pdf}} &
+    \raisebox{-\totalheight}{\logo[height=1cm,relative]} & \raisebox{-\totalheight}{\includegraphics[width=0.9cm]{assets/c-lang.pdf}} &
     \begin{center}
       {\Large \bf Carte de référence C99..C20} \\
       HEIG-VD -- version \revision \ -- \revisiondate \\
@@ -106,10 +126,10 @@ Elle est une liste non exhaustive des possibilités du langage C. Les prototypes
 \section*{Généralités}
 \begin{tabularx}{\linewidth}{lX}
   Prototype de fonction              & \cd{type name(type name,} \etc \cd{);} \\
-  Implantation de fonction           & \cd{type name(type name,} \etc \cd{) \{} \any \cd{\}} \\
+  Implantation de fonction           & \cd{type name(type name,} \etc \cd{) \{} \any{}\cd{\}} \\
   Déclaration de variable            & \cd{type name;} \\
-  Fonction principale                & \cd{int main(void) \{} \any \cd{\}} \\
-  Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any \cd{\}} \\
+  Fonction principale                & \cd{int main(void) \{} \any{}\cd{\}} \\
+  Fonction principale avec arguments & \cd{int main(int argc, char* argv[]) \{} \any{}\cd{\}} \\
   Valeur de retour de la fonction \texttt{main} & \cd{0} en cas de succès, \cd{!0} sinon\\
 \end{tabularx}
 
