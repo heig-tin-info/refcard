@@ -29,7 +29,8 @@ ENV PATH="${PATH}:${TL_PREFIX}/bin/x86_64-linuxmusl"
 RUN apk add --no-cache make ghostscript fontconfig ttf-freefont ncurses clisp qpdf \
     python3 py3-gitpython ttf-dejavu qpdf
 
-RUN tlmgr install latex-bin latexmk luaotfload fontspec texliveonfly fontspec tex-gyre
+RUN tlmgr install latex-bin latexmk luaotfload texliveonfly fontspec \
+    tex-gyre babel-french hyphen-french geometry csquotes lualatex-math
 
 ENV TERM=xterm
 ARG TEX_CACHE_DIR=/var/cache/texlive
